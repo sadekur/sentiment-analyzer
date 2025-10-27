@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name:       Sentiment Analyzer
- * Plugin URI:        https://srs.com
+ * Plugin URI:        https://sadekurrahman.net
  * Description:       A plugin Sentiment Analyzer for WordPress.
  * Version:           1.0.0
- * Requires at least: 5.9
- * Requires PHP:      7.2
- * Author:            SRS
- * Author URI:        https://srs.com
+ * Requires at least: 6.1
+ * Requires PHP:      7.4
+ * Author:            Sadekur Rahman
+ * Author URI:        https://sadekurrahman.net
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:        thrail-commerce
+ * Text Domain:       sentiment-analyzer
  * Domain Path:       /languages
  *
  */
