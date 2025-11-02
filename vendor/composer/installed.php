@@ -3,7 +3,7 @@
         'name' => 'sentiment/analyzer',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'a138e003ba87b56393a52a71655c1a056bda99f7',
+        'reference' => 'ab2100911e40c5dc179a7895aecf4496855cf35b',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'sentiment/analyzer' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'a138e003ba87b56393a52a71655c1a056bda99f7',
+            'reference' => 'ab2100911e40c5dc179a7895aecf4496855cf35b',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -1,21 +1,21 @@
 {
-    "name": "sentiment/analyzer",
-    "description": "A plugin for Sentiment Analyzer",
-    "type": "wordpress-plugin",
-	"license": "GPLv2",
-    "authors": [
-        {
-            "name": "Sadekur Rahman",
-            "email": "shadekur.rahman60@gmail.com"
-        }
-    ],
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Sentiment\\Analyzer\\": "app/"
-        },
-        "files": [
-            ["app/Helpers/functions.php"]
-        ]
+  "name": "sentiment/analyzer",
+  "description": "A plugin for Sentiment Analyzer",
+  "type": "wordpress-plugin",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Sadekur Rahman",
+      "email": "shadekur.rahman60@gmail.com"
     }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Sentiment\\Analyzer\\": "app/"
+    },
+    "files": [
+      "app/Helpers/functions.php"
+    ]
+  }
 }

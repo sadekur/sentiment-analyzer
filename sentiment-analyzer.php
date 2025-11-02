@@ -64,7 +64,7 @@ final class Sentiment_Analyzer{
 		define( 'Sentiment_Analyzer_FILE', __FILE__ );
 		define( 'Sentiment_Analyzer_PATH', plugin_dir_path(__FILE__) );
 		define( 'Sentiment_Analyzer_URL', plugin_dir_url(__FILE__) );
-		define( 'Sentiment_Analyzer_ASSETS', Sentiment_Analyzer_URL . 'assets' );
+		define( 'Sentiment_Analyzer_ASSETS', Sentiment_Analyzer_URL . 'assets/' );
 	}
 
 	/**
@@ -74,23 +74,23 @@ final class Sentiment_Analyzer{
 	 */
 	public function init_plugin() {
 
-		new Sentiment\Analyzer\Assets();
-		new Thrail\Commerce\Email();
-		new Thrail\Commerce\API();
-		new Thrail\Commerce\Common\Init();
-		new Thrail\Commerce\Blocks();
-		new Thrail\Commerce\Features();
-		new Thrail\Commerce\Helper();
+		new Sentiment\Analyzer\Controllers\Common\Assets();
+		// new Thrail\Commerce\Email();
+		// new Thrail\Commerce\API();
+		// new Thrail\Commerce\Common\Init();
+		// new Thrail\Commerce\Blocks();
+		// new Thrail\Commerce\Features();
+		// new Thrail\Commerce\Helper();
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new Thrail\Commerce\Ajax();
-		}
+		// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		// 	new Thrail\Commerce\Ajax();
+		// }
 
-		if ( is_admin() ) {
-			new Thrail\Commerce\Admin();
-		} else {
-			new Thrail\Commerce\Frontend();
-		}
+		// if ( is_admin() ) {
+		// 	new Thrail\Commerce\Admin();
+		// } else {
+		// 	new Thrail\Commerce\Frontend();
+		// }
 
 	}
 }
