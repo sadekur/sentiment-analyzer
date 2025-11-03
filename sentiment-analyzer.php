@@ -60,11 +60,11 @@ final class Sentiment_Analyzer{
 	 * @return void
 	 */
 	public function define_constants() {
-		define( 'Sentiment_Analyzer_VERSION', self::version );
-		define( 'Sentiment_Analyzer_FILE', __FILE__ );
-		define( 'Sentiment_Analyzer_PATH', plugin_dir_path(__FILE__) );
-		define( 'Sentiment_Analyzer_URL', plugin_dir_url(__FILE__) );
-		define( 'Sentiment_Analyzer_ASSETS', Sentiment_Analyzer_URL . 'assets/' );
+		define( 'SENTIMENT_ANALYZER_VERSION', self::version );
+		define( 'SENTIMENT_ANALYZER_FILE', __FILE__ );
+		define( 'SENTIMENT_ANALYZER_PATH', plugin_dir_path(__FILE__) );
+		define( 'SENTIMENT_ANALYZER_URL', plugin_dir_url(__FILE__) );
+		define( 'SENTIMENT_ANALYZER_ASSETS', SENTIMENT_ANALYZER_URL . 'assets/' );
 	}
 
 	/**

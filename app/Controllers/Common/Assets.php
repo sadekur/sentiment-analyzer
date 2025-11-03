@@ -26,8 +26,8 @@ class Assets {
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 			'logout_url'      => wp_logout_url(),
 			'ajax_url'        => admin_url( 'admin-ajax.php' ),
-			'assets'          => Sentiment_Analyzer_URL . 'assets/',
-			'plugin_url'      => Sentiment_Analyzer_URL,
+			'assets'          => SENTIMENT_ANALYZER_URL . 'assets/',
+			'plugin_url'      => SENTIMENT_ANALYZER_URL,
 		);
 
 		/**
@@ -40,17 +40,17 @@ class Assets {
 			
 			wp_enqueue_script(
 				'sentiment-analyzer-admin',
-				Sentiment_Analyzer_ASSETS . '/js/admin.js',
+				SENTIMENT_ANALYZER_ASSETS . '/js/admin.js',
 				array( 'jquery' ),
-				Sentiment_Analyzer_VERSION,
+				SENTIMENT_ANALYZER_VERSION,
 				true
 			);
 
 			wp_enqueue_style(
 				'sentiment-analyzer-admin',
-				Sentiment_Analyzer_ASSETS . '/css/admin.css',
+				SENTIMENT_ANALYZER_ASSETS . '/css/admin.css',
 				array(),
-				Sentiment_Analyzer_VERSION
+				SENTIMENT_ANALYZER_VERSION
 			);
 		}
 
@@ -64,16 +64,16 @@ class Assets {
 			
 			wp_enqueue_style(
 				'sentiment-analyzer-public',
-				Sentiment_Analyzer_ASSETS . '/css/public.css',
+				SENTIMENT_ANALYZER_ASSETS . '/css/public.css',
 				array(),
-				Sentiment_Analyzer_VERSION
+				SENTIMENT_ANALYZER_VERSION
 			);
 
 			wp_enqueue_script(
 				'sentiment-analyzer-public',
-				Sentiment_Analyzer_ASSETS . '/js/public.js',
+				SENTIMENT_ANALYZER_ASSETS . '/js/public.js',
 				array( 'jquery' ),
-				Sentiment_Analyzer_VERSION,
+				SENTIMENT_ANALYZER_VERSION,
 				true
 			);
 		}
@@ -86,17 +86,17 @@ class Assets {
 		if ( $load_common_assets ) {
 			wp_enqueue_script(
 				'sentiment-analyzer-common',
-				Sentiment_Analyzer_ASSETS . '/js/common.js',
+				SENTIMENT_ANALYZER_ASSETS . '/js/common.js',
 				array( 'jquery' ),
-				Sentiment_Analyzer_VERSION,
+				SENTIMENT_ANALYZER_VERSION,
 				true
 			);
 
 			wp_enqueue_style(
 				'sentiment-analyzer-common',
-				Sentiment_Analyzer_ASSETS . '/css/common.css',
+				SENTIMENT_ANALYZER_ASSETS . '/css/common.css',
 				array(),
-				Sentiment_Analyzer_VERSION
+				SENTIMENT_ANALYZER_VERSION
 			);
 
 			wp_localize_script(
