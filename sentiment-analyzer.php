@@ -74,11 +74,8 @@ final class Sentiment_Analyzer{
 
 		new Sentiment\Controllers\Common\Assets();
 		new Sentiment\Controllers\Common\Activation();
-		// new Thrail\Commerce\API();
-		// new Thrail\Commerce\Common\Init();
-		// new Thrail\Commerce\Blocks();
-		// new Thrail\Commerce\Features();
-		// new Thrail\Commerce\Helper();
+		new Sentiment\Controllers\Front\Shortcode();
+		new Sentiment\Controllers\Front\Front();
 
 		// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		// 	new Thrail\Commerce\Ajax();
