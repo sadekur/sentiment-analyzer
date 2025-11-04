@@ -1,18 +1,9 @@
 <?php
-namespace EasyCommerce\Controllers\Admin;
+namespace Sentiment\Controllers\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
-use EasyCommerce\Traits\Hook;
-use EasyCommerce\Traits\Asset;
-use EasyCommerce\Traits\Menu as Menu_Trait;
-use EasyCommerce\Helpers\Utility;
-
 class Menu {
-
-	use Hook;
-	use Asset;
-	use Menu_Trait;
 
 	/**
 	 * Constructor to add all hooks.
@@ -21,6 +12,7 @@ class Menu {
 		add_action('admin_menu', array($this, 'add_admin_menu'));
 		add_action('admin_init', array($this, 'register_settings'));
 		add_action('admin_post_bulk_update_sentiment', array($this, 'handle_bulk_update'));
+		add_action('admin_post_clear_sentiment_cache', array($this, 'handle_clear_cache'));
 	}
 
 	// public function register() {
@@ -243,4 +235,25 @@ class Menu {
         ));
         exit;
     }
+
+	// Handle cache clearing
+	public function handle_clear_cache() {
+		if (!current_user_can('manage_options')) {
+			wp_die(__('You do not have permission to perform this action.', 'sentiment-analyzer'));
+		}
+		
+		if (!isset($_POST['clear_cache_nonce']) || 
+			!wp_verify_nonce($_POST['clear_cache_nonce'], 'clear_cache_action')) {
+			wp_die(__('Security check failed.', 'sentiment-analyzer'));
+		}
+		
+		global $wpdb;
+		$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_sa_posts_%' OR option_name LIKE '_transient_timeout_sa_posts_%'");
+		
+		wp_redirect(add_query_arg(
+			array('page' => 'sentiment-analyzer', 'cache_cleared' => 'true'),
+			admin_url('options-general.php')
+		));
+		exit;
+	}
 }
