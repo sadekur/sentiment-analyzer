@@ -229,12 +229,12 @@ class Menu {
         foreach ($post_ids as $post_id) {
             $post = get_post($post_id);
             if ($post) {
-                $this->analyze_post_sentiment($post_id, $post, false);
+                sa_clear_sentiment_cache($post_id, $post, false);
             }
         }
         
         // Clear cache after bulk update
-        $this->clear_sentiment_cache();
+        sa_clear_sentiment_cache();
         
         // Redirect back with success message
         wp_redirect(add_query_arg(
