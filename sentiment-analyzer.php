@@ -72,8 +72,8 @@ final class Sentiment_Analyzer{
 	 */
 	public function init_plugin() {
 
-		new Sentiment\Analyzer\Controllers\Common\Assets();
-		// new Thrail\Commerce\Email();
+		new Sentiment\Controllers\Common\Assets();
+		new Sentiment\Controllers\Common\Activation();
 		// new Thrail\Commerce\API();
 		// new Thrail\Commerce\Common\Init();
 		// new Thrail\Commerce\Blocks();

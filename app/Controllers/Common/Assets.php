@@ -1,5 +1,5 @@
 <?php
-namespace Sentiment\Analyzer\Controllers\Common;
+namespace Sentiment\Controllers\Common;
 
 defined( 'ABSPATH' ) || exit;
 
