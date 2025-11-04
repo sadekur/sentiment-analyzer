@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* buttons */
+.easycommerce-primary-button {
+    position: relative;
+    z-index: 1;
+    @apply bg-ec-primary hover:bg-[#6640FF] duration-300 text-white rounded-[8px] py-[11px]
+    font-inter text-[16px] leading-[20px] w-max overflow-hidden;
+}
+
+.easycommerce-primary-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #8466FF 0%, #643DFF 100%);
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+}
+
+.easycommerce-outline-button {
+    @apply bg-transparent hover:bg-ec-primary duration-300 text-ec-primary hover:text-white rounded-md flex items-center px-4
+    font-inter text-[16px] leading-[20px] w-max border-[1px] border-solid border-ec-primary h-10 mt-3;
+}
+.easycommerce-underline-button {
+    @apply text-ec-body focus:text-ec-primary hover:text-ec-primary py-2 font-inter text-[16px] leading-[20px] w-max border-b-[1px] border-solid border-ec-body hover:border-ec-primary duration-300 focus:shadow-none;
+}
+.easycommerce-delete-button {
+    @apply rounded-full w-6 h-6 border-[1px] border-solid border-[#F0EDFB] bg-[#7351FD08] flex items-center justify-center hover:border-[#FF3A52] hover:bg-[#FF3A52] duration-300
+}
+
+/* Panels */
+.easycommerce-product-section {
+    @apply bg-white rounded-xl;
+}
+.product-panel-heading {
+    @apply py-[14px] px-6 flex items-center justify-between;
+    border-bottom: 1px solid #F0EDFB;
+}
+.product-panel-title {
+    @apply flex items-center gap-3 h-[41px]
+}
+.product-panel-title h3 {
+    @apply font-inter text-2xl font-medium text-ec-title leading-[38px]
+}
+.product-panel-title button.panel-info {
+    @apply border-none bg-transparent
+}
+.product-panel-body {
+    @apply p-6;
+    transition: 0.3s
+}
+.panel-actions {
+    @apply flex gap-2
+}
+.panel-actions button {
+    @apply rounded-lg p-2 w-8 h-8 flex items-center justify-center bg-white;
+    border: 1px solid #F0EDFB;
+}
+ button.ai-generate {
+    background: linear-gradient(180deg, #7351FD 0%, #A33BFF 100%);
+    border: none;
+}
+ button.ai-generate:hover {
+    background: linear-gradient(180deg, #A33BFF 0%, #7351FD 100%);
+    transition: 0.3s;
+}
+ button.ai-builder {
+    background: linear-gradient(180deg, #7351FD 0%, #A33BFF 100%);
+    border: none;
+}
+ button.ai-builder-disable {
+    background: linear-gradient(180deg, rgba(115, 81, 253, 0.5) 0%, rgba(163, 59, 255, 0.5) 100%);
+    border: none;
+}
+ a.ai-builder-upgrade {
+    background: linear-gradient(90deg, #FD7F51 0%, #B629F8 100%);
+    border: none;
+    border-radius: 8px;
+ }
+ button.ai-builder:hover {
+    background: linear-gradient(180deg, #A33BFF 0%, #7351FD 100%);
+    transition: 0.3s;
+}
+.panel-actions button.panel-drag {
+    cursor: move;
+}
+.panel-actions button.panel-collapse svg {
+    transition: 0.3s;
+}
+.panel-actions button.panel-collapse.collapsed svg {
+    transform: rotate(180deg);
+    transition: 0.3s;
+}
+.easycommerce-product-section.collapsed .product-panel-body {
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: 0.3s;
+}
+.easycommerce-product-section.collapsed .product-panel-body * {
+    display: none;
+}
+.easycommerce-product-section.collapsed .product-panel-heading {
+    border: none;
+}
+
+/* Input fields */
+.easycommerce-product-section :is(input, textarea) {
+    @apply p-4 rounded-lg font-inter text-[14px] leading-[20px];
+    border: 1px solid #F0EDFB;
+}
+.easycommerce-product-section :is(input, textarea)::placeholder {
+    @apply text-ec-placeholder;
+}
+.easycommerce-product-section :is(input, textarea):hover {
+    @apply border-ec-primary;
+    transition: border-color 0.3s ease;
+}
+.easycommerce-product-section :is(input, textarea):focus {
+    @apply border-ec-primary;
+    transition: border-color 0.3s ease;
+    box-shadow: 0 0 0 4px #F3F0FF;
+}
+
+.easycommerce-datepicker-container .react-datepicker {
+    @apply rounded-lg border border-ec-primary font-inter
+}
+
+.easycommerce-datepicker-container .react-datepicker__header {
+    @apply bg-ec-primary text-white
+}
+
+.easycommerce-datepicker-container h2.react-datepicker__current-month {
+    @apply text-white text-sm font-medium mb-1
+}
+
+.easycommerce-datepicker-container .react-datepicker__navigation-icon::before {
+    @apply border-white;
+    border-width: 1px 1px 0 0;
+}
+
+.easycommerce-datepicker-container .react-datepicker__day-name {
+    @apply text-white
+}
+
+.easycommerce-datepicker-container .react-datepicker__navigation {
+    top: 4px;
+}
+
+.easycommerce-datepicker-container .react-datepicker__day {
+    @apply text-ec-body
+}
+
+.easycommerce-datepicker-container .react-datepicker__day--outside-month {
+    @apply text-[#bbb]
+}
+
+.easycommerce-datepicker-container .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+    fill: #7351FD;
+    color: #7351FD;
+}
+
+.easycommerce-datepicker-container :is(.react-datepicker__day--selected:not([aria-disabled=true]):hover, .react-datepicker__day--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__day--in-range:not([aria-disabled=true]):hover, .react-datepicker__month-text--selected:not([aria-disabled=true]):hover, .react-datepicker__month-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__month-text--in-range:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--selected:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__quarter-text--in-range:not([aria-disabled=true]):hover, .react-datepicker__year-text--selected:not([aria-disabled=true]):hover, .react-datepicker__year-text--in-selecting-range:not([aria-disabled=true]):hover, .react-datepicker__year-text--in-range:not([aria-disabled=true]):hover, .react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range) {
+    @apply bg-ec-table-stock
+}
+
+.ec-product-status-dropdown button {
+    color: #7351FD !important;
+    border-color: #7351FD !important;
+}
+
+.easycommerce-datepicker-container .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+    @apply bg-ec-table-stock
+}
