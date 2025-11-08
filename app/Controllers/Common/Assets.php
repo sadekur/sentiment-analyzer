@@ -64,7 +64,7 @@ class Assets {
 			
 			wp_enqueue_style(
 				'sentiment-analyzer-public',
-				SENTIMENT_ANALYZER_ASSETS . '/css/public.css',
+				SENTIMENT_ANALYZER_ASSETS . '/public/css/public.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
