@@ -172,11 +172,14 @@ class Menu {
             <h2><?php _e('Bulk Actions', 'sentiment-analyzer'); ?></h2>
             <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <input type="hidden" name="action" value="bulk_update_sentiment">
-                <?php wp_nonce_field('bulk_update_sentiment_action', 'bulk_update_sentiment_nonce'); ?>
+                <?php // wp_nonce_field('bulk_update_sentiment_action', 'bulk_update_sentiment_nonce'); ?>
                 
                 <p><?php _e('Re-analyze sentiment for all existing posts using current keyword settings.', 'sentiment-analyzer'); ?></p>
                 
-                <?php submit_button(__('Bulk Update All Posts', 'sentiment-analyzer'), 'secondary', 'submit', false); ?>
+                <h2><?php esc_html_e('Bulk Update Sentiment', 'sentiment-analyzer'); ?></h2>
+                <button id="bulk-update-sentiment" class="button button-primary"><?php esc_html_e('Bulk Update All Posts', 'sentiment-analyzer'); ?></button>
+                <p id="bulk-update-status"></p>
+                <?php wp_nonce_field('bulk_update_sentiment_action', 'bulk_update_sentiment_nonce'); ?>
             </form>
             
             <hr>

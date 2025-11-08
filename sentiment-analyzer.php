@@ -75,9 +75,9 @@ final class Sentiment_Analyzer{
 		new Sentiment\Controllers\Common\Assets();
 		new Sentiment\Controllers\Common\Activation();
 
-		// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-		// 	new Thrail\Commerce\Ajax();
-		// }
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			new Thrail\Commerce\Ajax();
+		}
 
 		if ( is_admin() ) {
 			new Sentiment\Controllers\Admin\Menu();
