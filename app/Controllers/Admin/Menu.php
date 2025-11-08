@@ -14,46 +14,6 @@ class Menu {
 		add_action('admin_post_bulk_update_sentiment', array($this, 'handle_bulk_update'));
 		add_action('admin_post_clear_sentiment_cache', array($this, 'handle_clear_cache'));
 	}
-
-	// public function register() {
-	// 	$menus = easycommerce_menus();
-
-	// 	$register_submenus = function( $parent_slug, $submenus, $level = 0 ) use ( &$register_submenus ) {
-	// 		foreach ( $submenus as $submenu ) {
-	// 			$prefix = str_repeat( '↳', $level ) . ' ';
-
-	// 			$this->add_submenu(
-	// 				$parent_slug,
-	// 				$submenu['page_title'],
-	// 				$prefix . $submenu['menu_title'],
-	// 				$submenu['capability'] ?? 'manage_options',
-	// 				$submenu['slug'],
-	// 				$submenu['callback'] ?? '__return_null'
-	// 			);
-
-	// 			if ( ! empty( $submenu['submenus'] ) ) {
-	// 				$register_submenus( $parent_slug, $submenu['submenus'], $level + 1 );
-	// 			}
-	// 		}
-	// 	};
-
-	// 	foreach ( $menus as $menu ) {
-	// 		$this->add_menu(
-	// 			$menu['title'],
-	// 			$menu['menu_title'],
-	// 			$menu['capability'],
-	// 			$menu['slug'],
-	// 			$menu['callback'],
-	// 			$menu['icon'],
-	// 			$menu['position']
-	// 		);
-
-	// 		if ( ! empty( $menu['submenus'] ) ) {
-	// 			$register_submenus( $menu['slug'], $menu['submenus'] );
-	// 		}
-	// 	}
-	// }
-
 	  
     /**
      * Add admin menu
