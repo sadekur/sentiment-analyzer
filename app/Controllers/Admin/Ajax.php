@@ -1,1 +1,0 @@
-add_action('wp_ajax_bulk_update_sentiment', array($this, 'bulk_update_sentiment_ajax'));

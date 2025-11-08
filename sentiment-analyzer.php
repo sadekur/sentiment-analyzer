@@ -76,7 +76,7 @@ final class Sentiment_Analyzer{
 		new Sentiment\Controllers\Common\Activation();
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new Thrail\Commerce\Ajax();
+			new Sentiment\Controllers\Common\Ajax();
 		}
 
 		if ( is_admin() ) {

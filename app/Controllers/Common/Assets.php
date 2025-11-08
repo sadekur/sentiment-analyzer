@@ -40,7 +40,7 @@ class Assets {
 			
 			wp_enqueue_script(
 				'sentiment-analyzer-admin',
-				SENTIMENT_ANALYZER_ASSETS . '/js/admin.js',
+				SENTIMENT_ANALYZER_ASSETS . '/admin/js/admin.js',
 				array( 'jquery' ),
 				SENTIMENT_ANALYZER_VERSION,
 				true
