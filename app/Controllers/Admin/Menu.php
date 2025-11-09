@@ -10,7 +10,6 @@ class Menu {
 	 */
 	public function __construct() {
 		add_action('admin_menu', array($this, 'add_admin_menu'));
-		add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 	}
 	  
     /**
@@ -27,48 +26,6 @@ class Menu {
             30                                                    // Position
         );
     }
-
-	/**
-	 * Enqueue admin scripts and styles
-	 */
-	public function enqueue_admin_scripts($hook) {
-		// Only load on our settings page
-		if ('toplevel_page_sentiment-analyzer' !== $hook) {
-			return;
-		}
-
-		wp_enqueue_script(
-			'sentiment-analyzer-admin',
-			plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/js/admin.js',
-			array('jquery'),
-			'2.0.0',
-			true
-		);
-
-		wp_localize_script('sentiment-analyzer-admin', 'sentimentAnalyzer', array(
-			'apiUrl' => rest_url('sentiment-analyzer/v1'),
-			'nonce' => wp_create_nonce('wp_rest'),
-			'strings' => array(
-				'saving' => __('Saving settings...', 'sentiment-analyzer'),
-				'saveSuccess' => __('Settings saved successfully!', 'sentiment-analyzer'),
-				'saveError' => __('Error saving settings. Please try again.', 'sentiment-analyzer'),
-				'bulkUpdating' => __('Analyzing posts...', 'sentiment-analyzer'),
-				'bulkSuccess' => __('Successfully analyzed {count} posts!', 'sentiment-analyzer'),
-				'bulkError' => __('Error analyzing posts. Please try again.', 'sentiment-analyzer'),
-				'cacheClearing' => __('Clearing cache...', 'sentiment-analyzer'),
-				'cacheSuccess' => __('Cache cleared successfully!', 'sentiment-analyzer'),
-				'cacheError' => __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
-				'confirmBulk' => __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
-			)
-		));
-
-		wp_enqueue_style(
-			'sentiment-analyzer-admin',
-			plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/css/sentiment-analyzer-admin.css',
-			array(),
-			'2.0.0'
-		);
-	}
 
 	/**
      * Settings page HTML
