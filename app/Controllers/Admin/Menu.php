@@ -52,97 +52,72 @@ class Menu {
 					<?php esc_html_e('Configure the keywords used to determine post sentiment. Changes will apply to newly analyzed posts.', 'sentiment-analyzer'); ?>
 				</p>
 
-				<form id="sentiment-settings-form">
-					<table class="form-table">
-						<tr>
-							<th scope="row">
-								<label for="sa_positive_keywords">
-									<?php esc_html_e('Positive Keywords', 'sentiment-analyzer'); ?>
-								</label>
-							</th>
-							<td>
-								<textarea 
-									name="positive_keywords" 
-									id="sa_positive_keywords" 
-									rows="5" 
-									cols="50" 
-									class="large-text code"
-								><?php echo esc_textarea(get_option('sa_positive_keywords')); ?></textarea>
-								<p class="description">
-									<?php esc_html_e('Comma-separated list of positive keywords (e.g., good, great, excellent)', 'sentiment-analyzer'); ?>
-								</p>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label for="sa_negative_keywords">
-									<?php esc_html_e('Negative Keywords', 'sentiment-analyzer'); ?>
-								</label>
-							</th>
-							<td>
-								<textarea 
-									name="negative_keywords" 
-									id="sa_negative_keywords" 
-									rows="5" 
-									cols="50" 
-									class="large-text code"
-								><?php echo esc_textarea(get_option('sa_negative_keywords')); ?></textarea>
-								<p class="description">
-									<?php esc_html_e('Comma-separated list of negative keywords (e.g., bad, terrible, awful)', 'sentiment-analyzer'); ?>
-								</p>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label for="sa_neutral_keywords">
-									<?php esc_html_e('Neutral Keywords', 'sentiment-analyzer'); ?>
-								</label>
-							</th>
-							<td>
-								<textarea 
-									name="neutral_keywords" 
-									id="sa_neutral_keywords" 
-									rows="5" 
-									cols="50" 
-									class="large-text code"
-								><?php echo esc_textarea(get_option('sa_neutral_keywords')); ?></textarea>
-								<p class="description">
-									<?php esc_html_e('Comma-separated list of neutral keywords (e.g., okay, average, decent)', 'sentiment-analyzer'); ?>
-								</p>
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label for="sa_badge_position">
-									<?php esc_html_e('Badge Position', 'sentiment-analyzer'); ?>
-								</label>
-							</th>
-							<td>
-								<select name="badge_position" id="sa_badge_position" class="regular-text">
-									<option value="top" <?php selected(get_option('sa_badge_position'), 'top'); ?>>
-										<?php esc_html_e('Top of Content', 'sentiment-analyzer'); ?>
-									</option>
-									<option value="bottom" <?php selected(get_option('sa_badge_position'), 'bottom'); ?>>
-										<?php esc_html_e('Bottom of Content', 'sentiment-analyzer'); ?>
-									</option>
-								</select>
-								<p class="description">
-									<?php esc_html_e('Choose where to display the sentiment badge on posts', 'sentiment-analyzer'); ?>
-								</p>
-							</td>
-						</tr>
-					</table>
+				<?php
+                    $settings = get_option('sentiment_analyzer_settings', array());
+                    $defaults = array(
+                        'positive_keywords' => '',
+                        'negative_keywords' => '',
+                        'neutral_keywords'  => '',
+                        'badge_position'    => 'top',
+                    );
+                    $settings = wp_parse_args($settings, $defaults);
+                    ?>
 
-					<p class="submit">
-						<button type="submit" class="button button-primary button-large" id="save-settings">
-							<?php esc_html_e('Save Settings', 'sentiment-analyzer'); ?>
-						</button>
-						<span class="spinner"></span>
-					</p>
-				</form>
+                    <form id="sentiment-settings-form">
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row">
+                                    <label for="sa_positive_keywords"><?php esc_html_e('Positive Keywords', 'sentiment-analyzer'); ?></label>
+                                </th>
+                                <td>
+                                    <textarea name="positive_keywords" id="sa_positive_keywords" rows="5" cols="50" class="large-text code"><?php echo esc_textarea($settings['positive_keywords']); ?></textarea>
+                                    <p class="description"><?php esc_html_e('Comma-separated list of positive keywords (e.g., good, great, excellent)', 'sentiment-analyzer'); ?></p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label for="sa_negative_keywords"><?php esc_html_e('Negative Keywords', 'sentiment-analyzer'); ?></label>
+                                </th>
+                                <td>
+                                    <textarea name="negative_keywords" id="sa_negative_keywords" rows="5" cols="50" class="large-text code"><?php echo esc_textarea($settings['negative_keywords']); ?></textarea>
+                                    <p class="description"><?php esc_html_e('Comma-separated list of negative keywords (e.g., bad, terrible, awful)', 'sentiment-analyzer'); ?></p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label for="sa_neutral_keywords"><?php esc_html_e('Neutral Keywords', 'sentiment-analyzer'); ?></label>
+                                </th>
+                                <td>
+                                    <textarea name="neutral_keywords" id="sa_neutral_keywords" rows="5" cols="50" class="large-text code"><?php echo esc_textarea($settings['neutral_keywords']); ?></textarea>
+                                    <p class="description"><?php esc_html_e('Comma-separated list of neutral keywords (e.g., okay, average, decent)', 'sentiment-analyzer'); ?></p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">
+                                    <label for="sa_badge_position"><?php esc_html_e('Badge Position', 'sentiment-analyzer'); ?></label>
+                                </th>
+                                <td>
+                                    <select name="badge_position" id="sa_badge_position" class="regular-text">
+                                        <option value="top"    <?php selected($settings['badge_position'], 'top'); ?>><?php esc_html_e('Top of Content', 'sentiment-analyzer'); ?></option>
+                                        <option value="bottom" <?php selected($settings['badge_position'], 'bottom'); ?>><?php esc_html_e('Bottom of Content', 'sentiment-analyzer'); ?></option>
+                                        <option value="none"   <?php selected($settings['badge_position'], 'none'); ?>><?php esc_html_e('Don\'t Show Badge', 'sentiment-analyzer'); ?></option>
+                                    </select>
+                                    <p class="description"><?php esc_html_e('Choose where to display the sentiment badge on posts', 'sentiment-analyzer'); ?></p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p class="submit">
+                            <button type="submit" class="button button-primary button-large" id="save-settings">
+                                <?php esc_html_e('Save Settings', 'sentiment-analyzer'); ?>
+                            </button>
+                            <span class="spinner"></span>
+                            <span id="sa-messages"></span>
+                        </p>
+                    </form>
 			</div>
 
 			<!-- Bulk Actions Section -->

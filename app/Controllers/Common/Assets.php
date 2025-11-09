@@ -37,6 +37,8 @@ class Assets {
 				'cacheSuccess' => __('Cache cleared successfully!', 'sentiment-analyzer'),
 				'cacheError' => __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
 				'confirm' => __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
+				'saveSuccess' => __('Settings saved successfully!', 'sentiment-analyzer'),
+        		'saveError'   => __('Failed to save settings.', 'sentiment-analyzer'),
 			),
 		);
 
