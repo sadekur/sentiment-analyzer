@@ -1,15 +1,19 @@
 <?php
 namespace Sentiment\Controllers\Common;
 use Sentiment\API\Sentiment_Data;
+use Sentiment\Traits\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
 class API {
 
+
+	use Rest;
+
     /**
      * Namespace for the API
      */
-    private $namespace = 'sentiment-analyzer/v1';
+    // private $namespace = 'sentiment-analyzer/v1';
 
     /**
      * Constructor to register routes
@@ -23,7 +27,7 @@ class API {
      */
     public function register_routes() {
         // Update settings
-       	register_rest_route( $this->namespace, '/settings', array(
+		$this->register_route('/settings', array(
             'methods' => 'POST',
 			'callback' => array( new Sentiment_Data(), 'update_settings' ),
             'permission_callback' => array( $this, 'check_permission' ),
@@ -47,7 +51,7 @@ class API {
         ));
 
         // Get settings
-        register_rest_route( $this->namespace, '/settings', array(
+		register_rest_route( $this->namespace, '/settings', array(
             'methods' => 'GET',
             'callback' => array( new Sentiment_Data(), 'get_settings' ),
             'permission_callback' => array( $this, 'check_permission' ),

@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || exit;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use EasyCommerce\Traits\Rest;
+use Sentiment\Traits\Rest;
 
 class Sentiment_Data {
 
