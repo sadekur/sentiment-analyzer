@@ -9,6 +9,7 @@ class API {
      * Namespace for the API
      */
     private $namespace = 'sentiment-analyzer/v1';
+	private $option_name = 'sentiment_analyzer_settings';
 
     /**
      * Constructor to register routes
@@ -90,7 +91,7 @@ class API {
         ));
 
         // Update settings
-        register_rest_route($this->namespace, '/settings', array(
+       	register_rest_route($this->namespace, '/settings', array(
             'methods' => 'POST',
             'callback' => array($this, 'update_settings'),
             'permission_callback' => array($this, 'check_permission'),
@@ -107,7 +108,7 @@ class API {
                 'badge_position' => array(
                     'sanitize_callback' => 'sanitize_text_field',
                     'validate_callback' => function($param) {
-                        return in_array($param, array('top', 'bottom'));
+                        return in_array($param, array('top', 'bottom', 'none'));
                     }
                 ),
             ),
@@ -314,86 +315,115 @@ class API {
      * Update plugin settings
      */
     public function update_settings($request) {
-        $updated = array();
+        $current = get_option($this->option_name, array());
 
+        $defaults = array(
+            'positive_keywords' => '',
+            'negative_keywords' => '',
+            'neutral_keywords'  => '',
+            'badge_position'    => 'top',
+        );
+
+        $current = wp_parse_args($current, $defaults);
+
+        $updated_fields = array();
+
+        // Update only sent fields
         if ($request->has_param('positive_keywords')) {
-            update_option('sa_positive_keywords', $request->get_param('positive_keywords'));
-            $updated[] = 'positive_keywords';
+            $current['positive_keywords'] = $request->get_param('positive_keywords');
+            $updated_fields[] = 'positive_keywords';
         }
 
         if ($request->has_param('negative_keywords')) {
-            update_option('sa_negative_keywords', $request->get_param('negative_keywords'));
-            $updated[] = 'negative_keywords';
+            $current['negative_keywords'] = $request->get_param('negative_keywords');
+            $updated_fields[] = 'negative_keywords';
         }
 
         if ($request->has_param('neutral_keywords')) {
-            update_option('sa_neutral_keywords', $request->get_param('neutral_keywords'));
-            $updated[] = 'neutral_keywords';
+            $current['neutral_keywords'] = $request->get_param('neutral_keywords');
+            $updated_fields[] = 'neutral_keywords';
         }
 
         if ($request->has_param('badge_position')) {
-            update_option('sa_badge_position', $request->get_param('badge_position'));
-            $updated[] = 'badge_position';
+            $current['badge_position'] = $request->get_param('badge_position');
+            $updated_fields[] = 'badge_position';
         }
 
-        return rest_ensure_response(array(
-            'success' => true,
-            'updated' => $updated,
-            'message' => __('Settings updated successfully.', 'sentiment-analyzer'),
-        ));
+        // Save as single array
+        $saved = update_option($this->option_name, $current);
+
+        if ($saved) {
+            // Clear keyword cache if keywords changed
+            if (in_array('positive_keywords', $updated_fields) ||
+                in_array('negative_keywords', $updated_fields) ||
+                in_array('neutral_keywords', $updated_fields)) {
+                sa_clear_sentiment_cache(); // Force re-analysis on next view
+            }
+
+            return rest_ensure_response(array(
+                'success' => true,
+                'updated' => $updated_fields,
+                'settings' => $current,
+                'message' => __('Settings saved successfully.', 'sentiment-analyzer'),
+            ));
+        }
+
+        return new \WP_Error(
+            'save_failed',
+            __('Failed to save settings.', 'sentiment-analyzer'),
+            array('status' => 500)
+        );
     }
 
     /**
      * Get plugin settings
      */
     public function get_settings($request) {
+        $settings = get_option($this->option_name, array());
+
+        $defaults = array(
+            'positive_keywords' => '',
+            'negative_keywords' => '',
+            'neutral_keywords'  => '',
+            'badge_position'    => 'top',
+        );
+
+        $settings = wp_parse_args($settings, $defaults);
+
         return rest_ensure_response(array(
             'success' => true,
-            'settings' => array(
-                'positive_keywords' => get_option('sa_positive_keywords', ''),
-                'negative_keywords' => get_option('sa_negative_keywords', ''),
-                'neutral_keywords' => get_option('sa_neutral_keywords', ''),
-                'badge_position' => get_option('sa_badge_position', 'top'),
-            ),
+            'settings' => $settings,
         ));
+    }
+
+	public static function get_setting($key, $default = '') {
+        $settings = get_option('sentiment_analyzer_settings', array());
+        return isset($settings[$key]) ? $settings[$key] : $default;
     }
 
     /**
      * Perform sentiment analysis on a post
      */
     private function perform_sentiment_analysis($post) {
-        // Get post content
         $content = strtolower($post->post_content . ' ' . $post->post_title);
 
-        // Get keyword lists
-        $positive_keywords = sa_get_keywords_array(get_option('sa_positive_keywords', ''));
-        $negative_keywords = sa_get_keywords_array(get_option('sa_negative_keywords', ''));
-        $neutral_keywords = sa_get_keywords_array(get_option('sa_neutral_keywords', ''));
+        $positive_keywords = sa_get_keywords_array(self::get_setting('positive_keywords', ''));
+        $negative_keywords = sa_get_keywords_array(self::get_setting('negative_keywords', ''));
+        $neutral_keywords  = sa_get_keywords_array(self::get_setting('neutral_keywords', ''));
 
-        // Count keyword matches
         $positive_count = sa_count_keyword_matches($content, $positive_keywords);
         $negative_count = sa_count_keyword_matches($content, $negative_keywords);
-        $neutral_count = sa_count_keyword_matches($content, $neutral_keywords);
+        $neutral_count  = sa_count_keyword_matches($content, $neutral_keywords);
 
-        // Determine sentiment
-        $sentiment = 'neutral'; // Default
+        $sentiment = 'neutral';
 
         if ($positive_count > 0 || $negative_count > 0 || $neutral_count > 0) {
-            $max_count = max($positive_count, $negative_count, $neutral_count);
-
-            if ($positive_count === $max_count) {
-                $sentiment = 'positive';
-            } elseif ($negative_count === $max_count) {
-                $sentiment = 'negative';
-            } else {
-                $sentiment = 'neutral';
-            }
+            $max = max($positive_count, $negative_count, $neutral_count);
+            if ($positive_count === $max) $sentiment = 'positive';
+            elseif ($negative_count === $max) $sentiment = 'negative';
         }
 
-        // Store sentiment in post meta
         update_post_meta($post->ID, '_post_sentiment', sanitize_text_field($sentiment));
-
-        // Clear relevant caches
         delete_transient('sa_posts_' . $sentiment);
 
         return $sentiment;
