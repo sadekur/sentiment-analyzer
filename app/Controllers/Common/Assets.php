@@ -25,9 +25,19 @@ class Assets {
 			'rest_base'       => esc_url_raw( get_rest_url() ),
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 			'logout_url'      => wp_logout_url(),
+			'apiUrl' => rest_url('sentiment-analyzer/v1'),
 			'ajax_url'        => admin_url( 'admin-ajax.php' ),
 			'assets'          => SENTIMENT_ANALYZER_URL . 'assets/',
 			'plugin_url'      => SENTIMENT_ANALYZER_URL,
+			'strings' => array(
+				'bulkUpdating' => __('Analyzing posts...', 'sentiment-analyzer'),
+				'bulkSuccess' => __('Successfully analyzed {count} posts!', 'sentiment-analyzer'),
+				'bulkError' => __('Error analyzing posts. Please try again.', 'sentiment-analyzer'),
+				'cacheClearing' => __('Clearing cache...', 'sentiment-analyzer'),
+				'cacheSuccess' => __('Cache cleared successfully!', 'sentiment-analyzer'),
+				'cacheError' => __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
+				'confirm' => __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
+			),
 		);
 
 		/**

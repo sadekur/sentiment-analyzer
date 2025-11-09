@@ -11,8 +11,6 @@ class Menu {
 	public function __construct() {
 		add_action('admin_menu', array($this, 'add_admin_menu'));
 		add_action('admin_init', array($this, 'register_settings'));
-		add_action('admin_post_bulk_update_sentiment', array($this, 'handle_bulk_update'));
-		add_action('admin_post_clear_sentiment_cache', array($this, 'handle_clear_cache'));
 	}
 	  
     /**
@@ -49,7 +47,7 @@ class Menu {
         ));
     }
 
-	   /**
+	/**
      * Sanitize keyword input
      */
     public function sanitize_keywords($input) {
@@ -67,6 +65,16 @@ class Menu {
         // Handle settings saved message
         if (isset($_GET['settings-updated'])) {
             add_settings_error('sa_messages', 'sa_message', __('Settings Saved', 'sentiment-analyzer'), 'updated');
+        }
+
+        // Handle bulk update success
+        if (isset($_GET['bulk_updated'])) {
+            add_settings_error('sa_messages', 'sa_message', __('All posts analyzed successfully!', 'sentiment-analyzer'), 'updated');
+        }
+
+        // Handle cache cleared success
+        if (isset($_GET['cache_cleared'])) {
+            add_settings_error('sa_messages', 'sa_message', __('Cache cleared successfully!', 'sentiment-analyzer'), 'updated');
         }
         
         settings_errors('sa_messages');
@@ -130,93 +138,55 @@ class Menu {
             <hr>
             
             <h2><?php _e('Bulk Actions', 'sentiment-analyzer'); ?></h2>
-            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                <input type="hidden" name="action" value="bulk_update_sentiment">
-                <?php // wp_nonce_field('bulk_update_sentiment_action', 'bulk_update_sentiment_nonce'); ?>
-                
+            <div class="sa-bulk-actions">
                 <p><?php _e('Re-analyze sentiment for all existing posts using current keyword settings.', 'sentiment-analyzer'); ?></p>
                 
-                <h2><?php esc_html_e('Bulk Update Sentiment', 'sentiment-analyzer'); ?></h2>
-                <button id="bulk-update-sentiment" class="button button-primary"><?php esc_html_e('Bulk Update All Posts', 'sentiment-analyzer'); ?></button>
-                <p id="bulk-update-status"></p>
-                <?php wp_nonce_field('bulk_update_sentiment_action', 'bulk_update_sentiment_nonce'); ?>
-            </form>
+                <button id="bulk-update-sentiment" class="button button-primary" type="button">
+					<?php esc_html_e('Bulk Update All Posts', 'sentiment-analyzer'); ?>
+				</button>
+                
+                <div id="bulk-update-progress" style="display: none; margin-top: 10px;">
+                    <div class="sa-progress-bar">
+                        <div class="sa-progress-fill"></div>
+                    </div>
+                    <p class="sa-progress-text"></p>
+                </div>
+                
+                <div id="bulk-update-status"></div>
+            </div>
             
             <hr>
             
             <h2><?php _e('Clear Cache', 'sentiment-analyzer'); ?></h2>
-            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                <input type="hidden" name="action" value="clear_sentiment_cache">
-                <?php wp_nonce_field('clear_cache_action', 'clear_cache_nonce'); ?>
-                
+            <div class="sa-clear-cache">
                 <p><?php _e('Clear all cached sentiment query results.', 'sentiment-analyzer'); ?></p>
                 
-                <?php submit_button(__('Clear Cache', 'sentiment-analyzer'), 'secondary', 'submit', false); ?>
-            </form>
+                <button id="clear-cache" class="button button-secondary" type="button">
+					<?php esc_html_e('Clear Cache', 'sentiment-analyzer'); ?>
+				</button>
+                
+                <div id="clear-cache-status"></div>
+            </div>
+
+			<hr>
+
+			<h2><?php _e('API Information', 'sentiment-analyzer'); ?></h2>
+			<div class="sa-api-info">
+				<p><?php _e('You can use the REST API to interact with the plugin programmatically.', 'sentiment-analyzer'); ?></p>
+				<p><strong><?php _e('Base URL:', 'sentiment-analyzer'); ?></strong> <code><?php echo esc_url(rest_url('sentiment-analyzer/v1')); ?></code></p>
+				
+				<h3><?php _e('Available Endpoints:', 'sentiment-analyzer'); ?></h3>
+				<ul style="list-style: disc; margin-left: 20px;">
+					<li><code>POST /analyze/{post_id}</code> - <?php _e('Analyze a single post', 'sentiment-analyzer'); ?></li>
+					<li><code>POST /analyze/bulk</code> - <?php _e('Bulk analyze all posts', 'sentiment-analyzer'); ?></li>
+					<li><code>GET /sentiment/{post_id}</code> - <?php _e('Get post sentiment', 'sentiment-analyzer'); ?></li>
+					<li><code>POST /cache/clear</code> - <?php _e('Clear cache', 'sentiment-analyzer'); ?></li>
+					<li><code>GET /posts/{sentiment}</code> - <?php _e('Get posts by sentiment', 'sentiment-analyzer'); ?></li>
+					<li><code>GET /settings</code> - <?php _e('Get plugin settings', 'sentiment-analyzer'); ?></li>
+					<li><code>POST /settings</code> - <?php _e('Update plugin settings', 'sentiment-analyzer'); ?></li>
+				</ul>
+			</div>
         </div>
         <?php
     }
-
-	 /**
-     * Handle bulk sentiment update
-     */
-    public function handle_bulk_update() {
-        // Security checks
-        if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to perform this action.', 'sentiment-analyzer'));
-        }
-        
-        if (!isset($_POST['bulk_update_sentiment_nonce']) || 
-            !wp_verify_nonce($_POST['bulk_update_sentiment_nonce'], 'bulk_update_sentiment_action')) {
-            wp_die(__('Security check failed.', 'sentiment-analyzer'));
-        }
-        
-        // Get all published posts
-        $args = array(
-            'post_type' => 'post',
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'fields' => 'ids'
-        );
-        
-        $post_ids = get_posts($args);
-        
-        foreach ($post_ids as $post_id) {
-            $post = get_post($post_id);
-            if ($post) {
-                sa_clear_sentiment_cache($post_id, $post, false);
-            }
-        }
-        
-        // Clear cache after bulk update
-        sa_clear_sentiment_cache();
-        
-        // Redirect back with success message
-        wp_redirect(add_query_arg(
-            array('page' => 'sentiment-analyzer', 'bulk_updated' => 'true'),
-            admin_url('options-general.php')
-        ));
-        exit;
-    }
-
-	// Handle cache clearing
-	public function handle_clear_cache() {
-		if (!current_user_can('manage_options')) {
-			wp_die(__('You do not have permission to perform this action.', 'sentiment-analyzer'));
-		}
-		
-		if (!isset($_POST['clear_cache_nonce']) || 
-			!wp_verify_nonce($_POST['clear_cache_nonce'], 'clear_cache_action')) {
-			wp_die(__('Security check failed.', 'sentiment-analyzer'));
-		}
-		
-		global $wpdb;
-		$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_sa_posts_%' OR option_name LIKE '_transient_timeout_sa_posts_%'");
-		
-		wp_redirect(add_query_arg(
-			array('page' => 'sentiment-analyzer', 'cache_cleared' => 'true'),
-			admin_url('options-general.php')
-		));
-		exit;
-	}
 }
