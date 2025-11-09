@@ -57,8 +57,8 @@ class Assets {
 			);
 
 			wp_enqueue_style(
-				'sentiment-analyzer-admin',
-				SENTIMENT_ANALYZER_ASSETS . '/css/admin.css',
+				'sentiment-analyzer-settings',
+				SENTIMENT_ANALYZER_ASSETS . '/admin/css/settings.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
@@ -96,7 +96,7 @@ class Assets {
 		if ( $load_common_assets ) {
 			wp_enqueue_script(
 				'sentiment-analyzer-common',
-				SENTIMENT_ANALYZER_ASSETS . '/js/common.js',
+				SENTIMENT_ANALYZER_ASSETS . '/common/js/common.js',
 				array( 'jquery' ),
 				SENTIMENT_ANALYZER_VERSION,
 				true
@@ -104,7 +104,7 @@ class Assets {
 
 			wp_enqueue_style(
 				'sentiment-analyzer-common',
-				SENTIMENT_ANALYZER_ASSETS . '/css/common.css',
+				SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
