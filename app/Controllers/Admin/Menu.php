@@ -33,8 +33,8 @@ class Menu {
      * Settings page HTML
      */
     public function settings_page() {
-        if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'sentiment-analyzer'));
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die(__( 'You do not have sufficient permissions to access this page.', 'sentiment-analyzer' ) );
         }
         ?>
         <div class="wrap sentiment-analyzer-admin">
