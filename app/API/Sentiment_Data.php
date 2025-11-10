@@ -258,13 +258,13 @@ class Sentiment_Data {
     private function perform_sentiment_analysis( $post ) {
         $content = strtolower( $post->post_content . ' ' . $post->post_title );
 
-        $positive_keywords = sa_get_keywords_array(self::get_setting('positive_keywords', ''));
-        $negative_keywords = sa_get_keywords_array(self::get_setting('negative_keywords', ''));
-        $neutral_keywords  = sa_get_keywords_array(self::get_setting('neutral_keywords', ''));
+        $positive_keywords = sa_get_keywords_array( self::get_setting( 'positive_keywords', '' ) );
+        $negative_keywords = sa_get_keywords_array( self::get_setting( 'negative_keywords', '' ) );
+        $neutral_keywords  = sa_get_keywords_array( self::get_setting( 'neutral_keywords', '' ) );
 
-        $positive_count = sa_count_keyword_matches($content, $positive_keywords);
-        $negative_count = sa_count_keyword_matches($content, $negative_keywords);
-        $neutral_count  = sa_count_keyword_matches($content, $neutral_keywords);
+        $positive_count = sa_count_keyword_matches( $content, $positive_keywords );
+        $negative_count = sa_count_keyword_matches( $content, $negative_keywords );
+        $neutral_count  = sa_count_keyword_matches( $content, $neutral_keywords );
 
         $sentiment = 'neutral';
 
