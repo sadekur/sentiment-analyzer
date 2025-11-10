@@ -1,15 +1,17 @@
 <?php
 namespace Sentiment\Controllers\Admin;
+use Sentiment\Traits\Hook;
 
 defined( 'ABSPATH' ) || exit;
 
 class Menu {
+	use Hook;
 
 	/**
 	 * Constructor to add all hooks.
 	 */
 	public function __construct() {
-		add_action('admin_menu', array($this, 'add_admin_menu'));
+		$this->action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 	}
 	  
     /**
