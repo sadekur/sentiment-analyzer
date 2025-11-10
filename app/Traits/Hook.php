@@ -1,5 +1,5 @@
 <?php
-namespace EasyCommerce\Traits;
+namespace Sentiment\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
