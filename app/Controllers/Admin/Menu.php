@@ -19,11 +19,11 @@ class Menu {
      */
     public function add_admin_menu() {
         add_menu_page(
-            __('Sentiment Analyzer', 'sentiment-analyzer'),      // Page title
-            __('Sentiment Analyzer', 'sentiment-analyzer'),      // Menu title
+            __( 'Sentiment Analyzer', 'sentiment-analyzer' ),      // Page title
+            __( 'Sentiment Analyzer', 'sentiment-analyzer' ),      // Menu title
             'manage_options',                                     // Capability
             'sentiment-analyzer',                                 // Menu slug
-            array($this, 'settings_page'),                       // Callback
+            array( $this, 'settings_page' ),                       // Callback
             'dashicons-chart-line',                              // Icon
             30                                                    // Position
         );
