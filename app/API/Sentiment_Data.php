@@ -3,8 +3,6 @@ namespace Sentiment\API;
 
 defined( 'ABSPATH' ) || exit;
 
-use WP_REST_Request;
-use WP_REST_Response;
 use Sentiment\Traits\Rest;
 
 class Sentiment_Data {
@@ -20,8 +18,8 @@ class Sentiment_Data {
     /**
      * Update plugin settings
      */
-    public function update_settings($request) {
-        $current = get_option($this->option_name, array());
+    public function update_settings( $request ) {
+        $current = get_option( $this->option_name, array() );
 
         $defaults = array(
             'positive_keywords' => '',
@@ -30,28 +28,28 @@ class Sentiment_Data {
             'badge_position'    => 'top',
         );
 
-        $current = wp_parse_args($current, $defaults);
+        $current = wp_parse_args( $current, $defaults );
 
         $updated_fields = array();
 
         // Update only sent fields
-        if ($request->has_param('positive_keywords')) {
-            $current['positive_keywords'] = $request->get_param('positive_keywords');
+        if ( $request->has_param('positive_keywords' ) ) {
+            $current['positive_keywords'] = $request->get_param( 'positive_keywords' );
             $updated_fields[] = 'positive_keywords';
         }
 
-        if ($request->has_param('negative_keywords')) {
-            $current['negative_keywords'] = $request->get_param('negative_keywords');
+        if ( $request->has_param( 'negative_keywords' ) ) {
+            $current['negative_keywords'] = $request->get_param( 'negative_keywords' );
             $updated_fields[] = 'negative_keywords';
         }
 
-        if ($request->has_param('neutral_keywords')) {
-            $current['neutral_keywords'] = $request->get_param('neutral_keywords');
+        if ( $request->has_param( 'neutral_keywords' ) ) {
+            $current['neutral_keywords'] = $request->get_param( 'neutral_keywords' );
             $updated_fields[] = 'neutral_keywords';
         }
 
-        if ($request->has_param('badge_position')) {
-            $current['badge_position'] = $request->get_param('badge_position');
+        if ( $request->has_param( 'badge_position' ) ) {
+            $current['badge_position'] = $request->get_param( 'badge_position' );
             $updated_fields[] = 'badge_position';
         }
 
@@ -59,9 +57,9 @@ class Sentiment_Data {
         $saved = update_option( $this->option_name, $current );
 
         if ( $saved ) {
-            if (in_array('positive_keywords', $updated_fields) ||
-                in_array('negative_keywords', $updated_fields) ||
-                in_array('neutral_keywords', $updated_fields)) {
+            if ( in_array( 'positive_keywords', $updated_fields ) ||
+                in_array( 'negative_keywords', $updated_fields ) ||
+                in_array( 'neutral_keywords', $updated_fields ) ) {
                 sa_clear_sentiment_cache();
             }
 
@@ -75,7 +73,7 @@ class Sentiment_Data {
 
         return new \WP_Error(
             'save_failed',
-            __('Failed to save settings.', 'sentiment-analyzer'),
+            __( 'Failed to save settings.', 'sentiment-analyzer' ),
             array( 'status' => 500 )
         );
     }

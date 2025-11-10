@@ -76,9 +76,9 @@ final class Sentiment_Analyzer{
 		new Sentiment\Controllers\Common\Activation();
 		new Sentiment\Controllers\Common\API();
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			// new Sentiment\Controllers\Common\Ajax();
-		}
+		// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		// 	 new Sentiment\Controllers\Common\Ajax();
+		// }
 
 		if ( is_admin() ) {
 			new Sentiment\Controllers\Admin\Menu();
