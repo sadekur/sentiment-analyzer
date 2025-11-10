@@ -85,8 +85,8 @@ class Sentiment_Data {
         if ( ! $post ) {
             return new \WP_Error(
                 'post_not_found',
-                __('Post not found.', 'sentiment-analyzer'),
-                array('status' => 404)
+                __( 'Post not found.', 'sentiment-analyzer' ),
+                array( 'status' => 404 )
             );
         }
 
@@ -112,7 +112,7 @@ class Sentiment_Data {
     /**
      * Bulk analyze all posts
      */
-    public function bulk_analyze($request) {
+    public function bulk_analyze( $request ) {
         // Get all published posts
         $args = array(
             'post_type' => 'post',
@@ -121,14 +121,14 @@ class Sentiment_Data {
             'fields' => 'ids'
         );
 
-        $post_ids = get_posts($args);
+        $post_ids = get_posts( $args );
         $analyzed = 0;
         $results = array();
 
-        foreach ($post_ids as $post_id) {
-            $post = get_post($post_id);
-            if ($post) {
-                $sentiment = $this->perform_sentiment_analysis($post);
+        foreach ( $post_ids as $post_id ) {
+            $post = get_post( $post_id );
+            if ( $post ) {
+                $sentiment = $this->perform_sentiment_analysis( $post );
                 $results[] = array(
                     'post_id' => $post_id,
                     'sentiment' => $sentiment,
@@ -140,13 +140,13 @@ class Sentiment_Data {
         // Clear all caches
         sa_clear_sentiment_cache();
 
-        return rest_ensure_response(array(
+        return rest_ensure_response( array(
             'success' => true,
             'analyzed' => $analyzed,
-            'total' => count($post_ids),
+            'total' => count( $post_ids ),
             'results' => $results,
             'message' => sprintf(
-                __('Analyzed %d posts successfully.', 'sentiment-analyzer'),
+                __( 'Analyzed %d posts successfully.', 'sentiment-analyzer' ),
                 $analyzed
             ),
         ));
@@ -155,29 +155,27 @@ class Sentiment_Data {
     /**
      * Clear all sentiment caches
      */
-    public function clear_cache($request) {
+    public function clear_cache( $request ) {
         sa_clear_sentiment_cache();
 
-        return rest_ensure_response(array(
+        return rest_ensure_response( array(
             'success' => true,
-            'message' => __('Cache cleared successfully.', 'sentiment-analyzer'),
-        ));
+            'message' => __( 'Cache cleared successfully.', 'sentiment-analyzer' ),
+        ) );
     }
 
     /**
      * Get posts by sentiment
      */
-    public function get_posts_by_sentiment($request) {
-        $sentiment = $request->get_param('sentiment');
-        $page = $request->get_param('page');
-        $per_page = $request->get_param('per_page');
+    public function get_posts_by_sentiment( $request ) {
+        $sentiment      = $request->get_param( 'sentiment' );
+        $page           = $request->get_param( 'page' );
+        $per_page       = $request->get_param( 'per_page' );
+        $cache_key      = 'sa_posts_' . $sentiment . '_page_' . $page . '_per_' . $per_page;
+        $cached_data    = get_transient( $cache_key );
 
-        // Check cache
-        $cache_key = 'sa_posts_' . $sentiment . '_page_' . $page . '_per_' . $per_page;
-        $cached_data = get_transient($cache_key);
-
-        if ($cached_data !== false) {
-            return rest_ensure_response($cached_data);
+        if ( $cached_data !== false ) {
+            return rest_ensure_response( $cached_data );
         }
 
         // Query posts
