@@ -268,14 +268,14 @@ class Sentiment_Data {
 
         $sentiment = 'neutral';
 
-        if ($positive_count > 0 || $negative_count > 0 || $neutral_count > 0) {
-            $max = max($positive_count, $negative_count, $neutral_count);
-            if ($positive_count === $max) $sentiment = 'positive';
-            elseif ($negative_count === $max) $sentiment = 'negative';
+        if ( $positive_count > 0 || $negative_count > 0 || $neutral_count > 0 ) {
+            $max = max( $positive_count, $negative_count, $neutral_count );
+            if ( $positive_count === $max ) $sentiment = 'positive';
+            elseif ( $negative_count === $max ) $sentiment = 'negative';
         }
 
-        update_post_meta($post->ID, '_post_sentiment', sanitize_text_field($sentiment));
-        delete_transient('sa_posts_' . $sentiment);
+        update_post_meta( $post->ID, '_post_sentiment', sanitize_text_field( $sentiment ) );
+        delete_transient( 'sa_posts_' . $sentiment );
 
         return $sentiment;
     }
