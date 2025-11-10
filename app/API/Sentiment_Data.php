@@ -193,18 +193,18 @@ class Sentiment_Data {
             )
         );
 
-        $query = new \WP_Query($args);
+        $query = new \WP_Query( $args );
         $posts = array();
 
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
                 $query->the_post();
                 $posts[] = array(
-                    'id' => get_the_ID(),
-                    'title' => get_the_title(),
-                    'excerpt' => get_the_excerpt(),
+                    'id'        => get_the_ID(),
+                    'title'     => get_the_title(),
+                    'excerpt'   => get_the_excerpt(),
                     'permalink' => get_permalink(),
-                    'date' => get_the_date(),
+                    'date'      => get_the_date(),
                     'sentiment' => $sentiment,
                 );
             }
@@ -212,25 +212,25 @@ class Sentiment_Data {
         }
 
         $response_data = array(
-            'success' => true,
-            'posts' => $posts,
-            'total' => $query->found_posts,
-            'pages' => $query->max_num_pages,
-            'current_page' => $page,
-            'per_page' => $per_page,
+            'success'       => true,
+            'posts'         => $posts,
+            'total'         => $query->found_posts,
+            'pages'         => $query->max_num_pages,
+            'current_page'  => $page,
+            'per_page'      => $per_page,
         );
 
         // Cache for 1 hour
-        set_transient($cache_key, $response_data, HOUR_IN_SECONDS);
+        set_transient( $cache_key, $response_data, HOUR_IN_SECONDS );
 
-        return rest_ensure_response($response_data);
+        return rest_ensure_response( $response_data );
     }
 
     /**
      * Get plugin settings
      */
-    public function get_settings($request) {
-        $settings = get_option($this->option_name, array());
+    public function get_settings( $request ) {
+        $settings = get_option( $this->option_name, array() );
 
         $defaults = array(
             'positive_keywords' => '',
@@ -239,24 +239,24 @@ class Sentiment_Data {
             'badge_position'    => 'top',
         );
 
-        $settings = wp_parse_args($settings, $defaults);
+        $settings = wp_parse_args( $settings, $defaults );
 
-        return rest_ensure_response(array(
+        return rest_ensure_response( array(
             'success' => true,
             'settings' => $settings,
-        ));
+        ) );
     }
 
-	public static function get_setting($key, $default = '') {
-        $settings = get_option('sentiment_analyzer_settings', array());
-        return isset($settings[$key]) ? $settings[$key] : $default;
+	public static function get_setting( $key, $default = '' ) {
+        $settings = get_option( 'sentiment_analyzer_settings', array() );
+        return isset( $settings[$key] ) ? $settings[$key] : $default;
     }
 
     /**
      * Perform sentiment analysis on a post
      */
-    private function perform_sentiment_analysis($post) {
-        $content = strtolower($post->post_content . ' ' . $post->post_title);
+    private function perform_sentiment_analysis( $post ) {
+        $content = strtolower( $post->post_content . ' ' . $post->post_title );
 
         $positive_keywords = sa_get_keywords_array(self::get_setting('positive_keywords', ''));
         $negative_keywords = sa_get_keywords_array(self::get_setting('negative_keywords', ''));
