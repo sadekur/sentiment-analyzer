@@ -224,7 +224,7 @@ class Menu {
 				</table>
 			</div>
         </div>
-		<div id="root-menu"></div>
+		<!-- <div id="root-menu"></div> -->
         <?php
     }
 }
