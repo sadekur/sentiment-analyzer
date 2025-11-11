@@ -5,7 +5,7 @@
   "scripts": {
       "build": "webpack --mode production",
       "start": "webpack serve --config webpack.config.dev.js",
-      "watch": "webpack --watch",
+      "watch": "webpack --watch"
   },
   "author": "",
   "license": "ISC",
@@ -23,20 +23,25 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@wordpress/scripts": "^30.27.0",
-    "baseline-browser-mapping": "^2.8.25",
-    "browserslist": "^4.27.0",
-    "caniuse-lite": "^1.0.30001754",
-    "electron-to-chromium": "^1.5.249",
-    "escalade": "^3.2.0",
-    "fraction.js": "^4.3.7",
-    "nanoid": "^3.3.11",
-    "node-releases": "^2.0.27",
-    "normalize-range": "^0.1.2",
-    "picocolors": "^1.1.1",
-    "postcss-value-parser": "^4.2.0",
-    "source-map-js": "^1.2.1",
-    "update-browserslist-db": "^1.1.4"
+      "@wordpress/block-editor": "^13.0.0",
+      "@wordpress/blocks": "^13.0.0",
+      "@wordpress/hooks": "^4.26.0",
+      "@wordpress/plugins": "^7.10.0",
+      "autoprefixer": "^10.4.19",
+      "chart.js": "^4.4.4",
+      "css-loader": "^7.1.1",
+      "framer-motion": "^11.18.2",
+      "jquery": "^3.7.1",
+      "postcss-loader": "^8.1.1",
+      "react": "^18.3.1",
+      "react-chartjs-2": "^5.2.0",
+      "react-datepicker": "^7.3.0",
+      "react-loading-skeleton": "^3.5.0",
+      "react-tooltip": "^5.28.0",
+      "style-loader": "^4.0.0",
+      "swiper": "^11.1.14",
+      "tailwind-merge": "^2.5.4",
+      "tailwindcss": "^3.4.4"
   },
   "keywords": [],
   "description": ""
