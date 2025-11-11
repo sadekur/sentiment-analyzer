@@ -1,10 +1,19 @@
     const path = require('path');
 
     module.exports = {
-        entry: '.spa/src/App.js',
+        mode: argv.mode || "development",
+        // entry: '.spa/src/App.js',
+        // output: {
+        //     filename: 'bundle.js',
+        //     path: path.resolve(__dirname, 'build'),
+        // },
+        entry: {
+            admin: path.resolve(__dirname, "spa/admin/settings/src/App.jsx"),
+            public: path.resolve(__dirname, "spa/public/shortcodes/src/App.jsx"),
+        },
         output: {
-            filename: 'bundle.js',
-            path: path.resolve(__dirname, 'build'),
+            filename: "[name].bundle.js",
+            path: path.resolve(__dirname, "build"),
         },
         module: {
             rules: [
