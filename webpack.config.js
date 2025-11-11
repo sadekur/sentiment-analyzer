@@ -1,10 +1,10 @@
     const path = require('path');
 
     module.exports = {
-        entry: '.spa/src/App.js', // Your main React entry file
+        entry: '.spa/src/App.js',
         output: {
             filename: 'bundle.js',
-            path: path.resolve(__dirname, 'build'), // Output directory for compiled assets
+            path: path.resolve(__dirname, 'build'),
         },
         module: {
             rules: [
