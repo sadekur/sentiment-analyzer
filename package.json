@@ -13,8 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@wordpress/block-editor": "^13.0.0",
-    "@wordpress/blocks": "^13.0.0",
     "@wordpress/hooks": "^4.26.0",
     "@wordpress/plugins": "^7.10.0",
     "autoprefixer": "^10.4.19",
