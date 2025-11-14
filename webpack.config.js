@@ -6,6 +6,7 @@ module.exports = (env, argv) => ({
     entry: {
         admin: path.resolve(__dirname, "spa/admin/settings/src/App.jsx"),
         public: path.resolve(__dirname, "spa/public/shortcodes/src/App.jsx"),
+        tailwind: path.resolve(__dirname, "assets/common/css/tailwind.css"),
     },
     output: {
         filename: "[name].bundle.js",
@@ -17,9 +18,15 @@ module.exports = (env, argv) => ({
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
+                    loader: 'postcss-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                        postcssOptions: {
+                            ident: "postcss",
+                            plugins: [
+                                require("tailwindcss"),
+                                require("autoprefixer"),
+                            ],
+                        },
                     },
                 },
             },

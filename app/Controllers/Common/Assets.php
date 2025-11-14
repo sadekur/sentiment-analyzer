@@ -61,7 +61,8 @@ class Assets {
 				'sentiment-analyzer-admin-react',
 				SENTIMENT_ANALYZER_URL . 'build/admin.bundle.js',
 				array(),
-				SENTIMENT_ANALYZER_VERSION, true
+				SENTIMENT_ANALYZER_VERSION,
+				true
 			);
 
 			wp_enqueue_script(
@@ -110,6 +111,14 @@ class Assets {
 		 * @since 1.0
 		 */
 		if ( $load_common_assets ) {
+
+			wp_enqueue_style(
+				'sentiment-analyzer-common',
+				SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
+				array(),
+				SENTIMENT_ANALYZER_VERSION
+			);
+
 			wp_enqueue_script(
 				'sentiment-analyzer-common',
 				SENTIMENT_ANALYZER_ASSETS . '/common/js/common.js',
@@ -118,11 +127,12 @@ class Assets {
 				true
 			);
 
-			wp_enqueue_style(
-				'sentiment-analyzer-common',
-				SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
-				array(),
-				SENTIMENT_ANALYZER_VERSION
+			wp_enqueue_script(
+				'sentiment-analyzer-common-tailwind-script',
+				THRAIL_COMMERCE_URL . 'build/tailwind.build.js',
+				[],
+				time(),
+				true
 			);
 
 			wp_localize_script(
