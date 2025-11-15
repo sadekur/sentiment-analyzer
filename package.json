@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-      "build": "webpack --config webpack.config.js",
-      "build:admin": "webpack --config webpack.config.admin.js",
-      "build:public": "webpack --config webpack.config.public.js",
-      "build:css": "webpack --config webpack.config.js",
-      "start": "webpack serve --config webpack.config.dev.js",
-      "watch": "webpack --watch"
+    "build": "webpack --config webpack.config.js",
+    "build:admin": "webpack --config webpack.config.admin.js",
+    "build:public": "webpack --config webpack.config.public.js",
+    "build:css": "webpack --config webpack.config.js",
+    "start": "webpack serve --config webpack.config.dev.js",
+    "watch": "webpack --watch"
   },
   "author": "",
   "license": "ISC",
@@ -22,9 +22,9 @@
     "jquery": "^3.7.1",
     "postcss-loader": "^8.1.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^7.3.0",
+    "react-dom": "^18.3.1",
     "react-loading-skeleton": "^3.5.0",
     "react-tooltip": "^5.28.0",
     "style-loader": "^4.0.0",
@@ -38,6 +38,7 @@
     "@babel/preset-react": "^7.28.5",
     "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
+    "mini-css-extract-plugin": "^2.9.4",
     "postcss": "^8.5.6",
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1"

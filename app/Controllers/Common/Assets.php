@@ -50,9 +50,20 @@ class Assets {
 		if ( is_admin() ) {
 			$load_common_assets = true;
 
+			// Enqueue admin-specific CSS (if exists, otherwise skip)
+			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/admin/css/settings.css')) {
+				wp_enqueue_style(
+					'sentiment-analyzer-settings',
+					SENTIMENT_ANALYZER_ASSETS . '/admin/css/settings.css',
+					array(),
+					SENTIMENT_ANALYZER_VERSION
+				);
+			}
+
+			// Enqueue admin React CSS bundle
 			wp_enqueue_style(
-				'sentiment-analyzer-settings',
-				SENTIMENT_ANALYZER_ASSETS . '/admin/css/settings.css',
+				'sentiment-analyzer-admin-react',
+				SENTIMENT_ANALYZER_URL . 'build/admin.bundle.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
@@ -60,7 +71,7 @@ class Assets {
 			wp_enqueue_script( 
 				'sentiment-analyzer-admin-react',
 				SENTIMENT_ANALYZER_URL . 'build/admin.bundle.js',
-				array(),
+				array('wp-element', 'wp-components'),
 				SENTIMENT_ANALYZER_VERSION,
 				true
 			);
@@ -82,9 +93,20 @@ class Assets {
 		elseif ( ! is_admin() ) {
 			$load_common_assets = true;
 			
+			// Enqueue public-specific CSS (if exists, otherwise skip)
+			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/public/css/public.css')) {
+				wp_enqueue_style(
+					'sentiment-analyzer-public',
+					SENTIMENT_ANALYZER_ASSETS . '/public/css/public.css',
+					array(),
+					SENTIMENT_ANALYZER_VERSION
+				);
+			}
+
+			// Enqueue public React CSS bundle
 			wp_enqueue_style(
-				'sentiment-analyzer-public',
-				SENTIMENT_ANALYZER_ASSETS . '/public/css/public.css',
+				'sentiment-analyzer-public-react',
+				SENTIMENT_ANALYZER_URL . 'build/public.bundle.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
@@ -92,7 +114,7 @@ class Assets {
 			wp_enqueue_script( 
 				'sentiment-analyzer-public-react',
 				SENTIMENT_ANALYZER_URL . 'build/public.bundle.js',
-				array(),
+				array('wp-element', 'wp-components'),
 				SENTIMENT_ANALYZER_VERSION, true
 			);
 
@@ -112,9 +134,20 @@ class Assets {
 		 */
 		if ( $load_common_assets ) {
 
+			// Enqueue common CSS (if exists, otherwise skip)
+			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/common/css/common.css')) {
+				wp_enqueue_style(
+					'sentiment-analyzer-common',
+					SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
+					array(),
+					SENTIMENT_ANALYZER_VERSION
+				);
+			}
+
+			// Enqueue the built Tailwind CSS
 			wp_enqueue_style(
-				'sentiment-analyzer-common',
-				SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
+				'sentiment-analyzer-tailwind',
+				SENTIMENT_ANALYZER_URL . 'build/tailwind.build.bundle.css',
 				array(),
 				SENTIMENT_ANALYZER_VERSION
 			);
@@ -124,14 +157,6 @@ class Assets {
 				SENTIMENT_ANALYZER_ASSETS . '/common/js/common.js',
 				array( 'jquery' ),
 				SENTIMENT_ANALYZER_VERSION,
-				true
-			);
-
-			wp_enqueue_script(
-				'sentiment-analyzer-common-tailwind-script',
-				SENTIMENT_ANALYZER_URL . 'build/tailwind.build.js',
-				[],
-				time(),
 				true
 			);
 

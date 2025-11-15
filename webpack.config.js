@@ -1,38 +1,64 @@
+// webpack.config.js
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => ({
-    mode: argv.mode || "development",
+    mode: argv.mode || 'development',
 
     entry: {
-        admin: path.resolve(__dirname, "spa/admin/settings/src/App.jsx"),
-        public: path.resolve(__dirname, "spa/public/shortcodes/src/App.jsx"),
-        tailwind: path.resolve(__dirname, "assets/common/css/tailwind.css"),
+        admin: path.resolve(__dirname, 'spa/admin/settings/src/App.jsx'),
+        public: path.resolve(__dirname, 'spa/public/shortcodes/src/App.jsx'),
+        'tailwind.build': path.resolve(__dirname, 'assets/common/css/tailwind.css'),
     },
+
     output: {
-        filename: "[name].bundle.js",
-        path: path.resolve(__dirname, "build"),
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'build'),
+        clean: true, // Clean build folder
     },
+
     module: {
         rules: [
+            // 1. JavaScript & JSX → Use Babel
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            ident: "postcss",
-                            plugins: [
-                                require("tailwindcss"),
-                                require("autoprefixer"),
-                            ],
+                    loader: 'babel-loader',
+                },
+            },
+
+            // 2. CSS → Process Tailwind + PostCSS
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader, // Extract CSS to files
+                    'css-loader',                // Resolves @import and url()
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require('tailwindcss'),
+                                    require('autoprefixer'),
+                                ],
+                            },
                         },
                     },
-                },
+                ],
             },
         ],
     },
+
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: '[name].bundle.css',  // Output CSS files with .css extension
+        }),
+    ],
+
     resolve: {
         extensions: ['.js', '.jsx'],
     },
+
+    devtool: argv.mode === 'production' ? false : 'source-map',
 });
