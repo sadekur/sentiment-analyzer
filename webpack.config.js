@@ -25,6 +25,24 @@ module.exports = (env, argv) => ({
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    targets: {
+                                        browsers: ['last 2 versions']
+                                    }
+                                }
+                            ],
+                            [
+                                '@babel/preset-react',
+                                {
+                                    runtime: 'automatic'
+                                }
+                            ]
+                        ]
+                    }
                 },
             },
 
