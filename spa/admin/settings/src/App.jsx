@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 const App = () => {
 	return (
-		<div className="text-bold text-[20px]">
+		<div className="text-bold text-[200px]">
 			Hello World
 		</div>
 	);

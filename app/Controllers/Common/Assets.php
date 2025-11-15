@@ -129,7 +129,7 @@ class Assets {
 
 			wp_enqueue_script(
 				'sentiment-analyzer-common-tailwind-script',
-				THRAIL_COMMERCE_URL . 'build/tailwind.build.js',
+				SENTIMENT_ANALYZER_URL . 'build/tailwind.build.js',
 				[],
 				time(),
 				true
