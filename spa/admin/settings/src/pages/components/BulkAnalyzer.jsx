@@ -111,25 +111,26 @@ const BulkAnalyzer = () => {
 
         {/* Button */}
         <button
-          onClick={startBulkAnalysis}
-          disabled={isLoading}
-          className={`
-            px-6 py-2 rounded-lg font-semibold text-white text-lg transition-all transform
-            ${isLoading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 shadow-lg hover:shadow-xl"
-            }
-          `}
-        >
-          {isLoading ? (
-            <>
-              <span className="inline-block animate-spin w-5 h-5 mr-3 border-2 border-white border-t-transparent rounded-full" />
-              Running Bulk Analysis...
-            </>
-          ) : (
-            "Start Bulk Analysis Now"
-          )}
-        </button>
+            onClick={startBulkAnalysis}
+            disabled={isLoading}
+            className={`
+                px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 
+                ${isLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 shadow-lg hover:shadow-xl"
+                }
+            `}
+            >
+            {isLoading ? (
+                <>
+                <span className="inline-block animate-spin w-5 h-5 mr-3 border-2 border-white border-t-transparent rounded-full" />
+                Running Bulk Analysis...
+                </>
+            ) : (
+                "Start Bulk Analysis Now"
+            )}
+            </button>
+
 
         <p className="mt-4 text-xs text-gray-500">
           This runs entirely on the server — fast and safe for thousands of posts.
