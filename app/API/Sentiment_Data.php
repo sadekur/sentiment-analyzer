@@ -99,7 +99,7 @@ class Sentiment_Data {
         }
 
         // Analyze sentiment
-        $sentiment = $this->perform_sentiment_analysis( $post );
+        $sentiment = perform_sentiment_analysis( $post );
 
         return rest_ensure_response( array(
             'success' => true,
@@ -128,7 +128,7 @@ class Sentiment_Data {
         foreach ( $post_ids as $post_id ) {
             $post = get_post( $post_id );
             if ( $post ) {
-                $sentiment = $this->perform_sentiment_analysis( $post );
+                $sentiment = perform_sentiment_analysis( $post );
                 $results[] = array(
                     'post_id' => $post_id,
                     'sentiment' => $sentiment,
@@ -245,38 +245,5 @@ class Sentiment_Data {
             'success' => true,
             'settings' => $settings,
         ) );
-    }
-
-	public static function get_setting( $key, $default = '' ) {
-        $settings = get_option( 'sentiment_analyzer_settings', array() );
-        return isset( $settings[$key] ) ? $settings[$key] : $default;
-    }
-
-    /**
-     * Perform sentiment analysis on a post
-     */
-    private function perform_sentiment_analysis( $post ) {
-        $content = strtolower( $post->post_content . ' ' . $post->post_title );
-
-        $positive_keywords = sa_get_keywords_array( self::get_setting( 'positive_keywords', '' ) );
-        $negative_keywords = sa_get_keywords_array( self::get_setting( 'negative_keywords', '' ) );
-        $neutral_keywords  = sa_get_keywords_array( self::get_setting( 'neutral_keywords', '' ) );
-
-        $positive_count = sa_count_keyword_matches( $content, $positive_keywords );
-        $negative_count = sa_count_keyword_matches( $content, $negative_keywords );
-        $neutral_count  = sa_count_keyword_matches( $content, $neutral_keywords );
-
-        $sentiment = 'neutral';
-
-        if ( $positive_count > 0 || $negative_count > 0 || $neutral_count > 0 ) {
-            $max = max( $positive_count, $negative_count, $neutral_count );
-            if ( $positive_count === $max ) $sentiment = 'positive';
-            elseif ( $negative_count === $max ) $sentiment = 'negative';
-        }
-
-        update_post_meta( $post->ID, '_post_sentiment', sanitize_text_field( $sentiment ) );
-        delete_transient( 'sa_posts_' . $sentiment );
-
-        return $sentiment;
     }
 }
