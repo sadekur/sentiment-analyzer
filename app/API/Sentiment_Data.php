@@ -99,7 +99,7 @@ class Sentiment_Data {
         }
 
         // Analyze sentiment
-        $sentiment = perform_sentiment_analysis( $post );
+        $sentiment = sa_perform_sentiment_analysis( $post );
 
         return rest_ensure_response( array(
             'success' => true,
@@ -128,7 +128,7 @@ class Sentiment_Data {
         foreach ( $post_ids as $post_id ) {
             $post = get_post( $post_id );
             if ( $post ) {
-                $sentiment = perform_sentiment_analysis( $post );
+                $sentiment = sa_perform_sentiment_analysis( $post );
                 $results[] = array(
                     'post_id' => $post_id,
                     'sentiment' => $sentiment,

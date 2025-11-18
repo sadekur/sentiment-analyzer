@@ -55,7 +55,7 @@ function sa_get_sentiment_badge_html( $sentiment ) {
     );
 }
 
-function get_setting( $key, $default = '' ) {
+function sa_get_setting( $key, $default = '' ) {
         $settings = get_option( 'sentiment_analyzer_settings', array() );
         return isset( $settings[$key] ) ? $settings[$key] : $default;
 }
@@ -63,12 +63,12 @@ function get_setting( $key, $default = '' ) {
 /**
  * Perform sentiment analysis on a post
  */
-function perform_sentiment_analysis( $post ) {
+function sa_perform_sentiment_analysis( $post ) {
     $content = strtolower( $post->post_content . ' ' . $post->post_title );
 
-    $positive_keywords = sa_get_keywords_array(get_setting( 'positive_keywords', '' ) );
-    $negative_keywords = sa_get_keywords_array( get_setting( 'negative_keywords', '' ) );
-    $neutral_keywords  = sa_get_keywords_array( get_setting( 'neutral_keywords', '' ) );
+    $positive_keywords = sa_get_keywords_array( sa_get_setting( 'positive_keywords', '' ) );
+    $negative_keywords = sa_get_keywords_array( sa_get_setting( 'negative_keywords', '' ) );
+    $neutral_keywords  = sa_get_keywords_array( sa_get_setting( 'neutral_keywords', '' ) );
 
     $positive_count = sa_count_keyword_matches( $content, $positive_keywords );
     $negative_count = sa_count_keyword_matches( $content, $negative_keywords );
