@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import BulkAnalyzer from "./components/BulkAnalyzer";
 
 const Analyzer = () => {
   const [settings, setSettings] = useState({
@@ -181,14 +182,7 @@ const Analyzer = () => {
       </form>
 
       {/* Bulk Actions Section */}
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-700 mb-3">
-          Bulk Actions
-        </h2>
-        <p className="text-gray-600">
-          You can perform bulk actions on your posts to analyze sentiment.
-        </p>
-      </div>
+      <BulkAnalyzer />
 
       {/* Clear Cache Section */}
 

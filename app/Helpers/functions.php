@@ -8,7 +8,7 @@ function sa_clear_sentiment_cache() {
     $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_sa_posts_%' OR option_name LIKE '_transient_timeout_sa_posts_%'" );
 }
 
-    /**
+/**
  * Convert keyword string to array
  */
 function sa_get_keywords_array( $keywords_string ) {
