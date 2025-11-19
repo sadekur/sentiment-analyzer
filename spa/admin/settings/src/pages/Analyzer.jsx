@@ -150,7 +150,7 @@ const Analyzer = () => {
               name="badge_position"
               value={settings.badge_position}
               onChange={handleInputChange}
-              className="p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-[100px] p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="top">Top</option>
               <option value="bottom">Bottom</option>
