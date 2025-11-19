@@ -19,9 +19,9 @@ const BulkAnalyzer = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-WP-Nonce": SENTIMENT_ANALYZER.nonce, // Critical for auth
+            "X-WP-Nonce": SENTIMENT_ANALYZER.nonce,
           },
-          // You can pass filters if you want later
+          // filters if you want later
           // body: JSON.stringify({ status: 'publish', limit: 500 }),
         }
       );
@@ -37,7 +37,7 @@ const BulkAnalyzer = () => {
       }
 
       // Success!
-      setResults(data.data); // assuming your backend returns counts
+      setResults(data.data);
       setStatus("Bulk analysis completed successfully!");
       
     } catch (err) {
