@@ -29,7 +29,7 @@ class Menu {
             __( 'Dashboard', 'sentiment-analyzer' ),
             __( 'Dashboard', 'sentiment-analyzer' ),
             'manage_options',
-            'sentiment-analyzer',                    // same as parent → becomes default
+            'sentiment-analyzer',
             [ $this, 'render_main_page' ]
         );
 
@@ -38,7 +38,7 @@ class Menu {
             __( 'Sentiments', 'sentiment-analyzer' ),
             __( 'Sentiments', 'sentiment-analyzer' ),
             'manage_options',
-            'sentiment-analyzer#/sentiments',        // hash route
+            'sentiment-analyzer#/sentiments',
             [ $this, 'render_main_page' ]
         );
 
