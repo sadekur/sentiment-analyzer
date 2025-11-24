@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BulkAnalyzer from "./components/BulkAnalyzer";
 import ClearCache from "./components/ClearCache";
 
-const Analyzer = () => {
+const Sentiments = () => {
   const [settings, setSettings] = useState({
     positive_keywords: "",
     negative_keywords: "",
@@ -203,4 +203,4 @@ const Analyzer = () => {
   );
 };
 
-export default Analyzer;
+export default Sentiments;

@@ -5,37 +5,59 @@ use Sentiment\Traits\Hook;
 defined( 'ABSPATH' ) || exit;
 
 class Menu {
-	use Hook;
+    use Hook;
 
-	/**
-	 * Constructor to add all hooks.
-	 */
-	public function __construct() {
-		$this->action( 'admin_menu', array( $this, 'add_admin_menu' ) );
-	}
-	  
-    /**
-     * Add admin menu as standalone menu (not under Settings)
-     */
-    public function add_admin_menu() {
+    public function __construct() {
+        $this->action( 'admin_menu', [ $this, 'register_menus' ] );
+    }
+
+    public function register_menus() {
+        // Main top-level menu
         add_menu_page(
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
-            'manage_options',                                
-            'sentiment-analyzer',                                 
-            array( $this, 'settings_page' ),                   
-            'dashicons-chart-line',                            
-            30     
+            'manage_options',
+            'sentiment-analyzer',                    // parent slug
+            [ $this, 'render_main_page' ],
+            'dashicons-chart-line',
+            30
         );
+
+        // Submenus (visible in WP admin sidebar)
+        add_submenu_page(
+            'sentiment-analyzer',
+            __( 'Dashboard', 'sentiment-analyzer' ),
+            __( 'Dashboard', 'sentiment-analyzer' ),
+            'manage_options',
+            'sentiment-analyzer',                    // same as parent → becomes default
+            [ $this, 'render_main_page' ]
+        );
+
+        add_submenu_page(
+            'sentiment-analyzer',
+            __( 'Sentiments', 'sentiment-analyzer' ),
+            __( 'Sentiments', 'sentiment-analyzer' ),
+            'manage_options',
+            'sentiment-analyzer#/sentiments',        // hash route
+            [ $this, 'render_main_page' ]
+        );
+
+        // add_submenu_page(
+        //     'sentiment-analyzer',
+        //     __( 'Settings', 'sentiment-analyzer' ),
+        //     __( 'Settings', 'sentiment-analyzer' ),
+        //     'manage_options',
+        //     'sentiment-analyzer#/settings',
+        //     [ $this, 'render_main_page' ]
+        // );
+
+        // You can add more like #/reports, #/help, etc.
     }
 
-	/**
-     * Settings page HTML
+    /**
+     * Render the React container (same for all submenu pages)
      */
-    public function settings_page() {
-        ?>
-        
-		<div id="root-menu"></div>
-        <?php
+    public function render_main_page() {
+        echo '<div class="wrap"><div id="sentiment-root"></div></div>';
     }
 }
