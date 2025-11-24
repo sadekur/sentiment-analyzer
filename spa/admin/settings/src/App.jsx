@@ -4,9 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import your pages
-import Dashboard from "./pages/Dashboard";
-import Help from "./pages/Help";
 import Sentiments from "./pages/Sentiments";
+import Settings from "./pages/Settings";
 
 // Optional: fallback component
 const NotFound = () => (
@@ -17,8 +16,8 @@ const NotFound = () => (
 );
 
 const App = () => {
-    const validTabs = ["/sentiments", "/settings", "/help"];
-    const defaultTab = "/sentiments"; // change if you want Dashboard as default
+    const validTabs = ["/sentiments", "/settings"];
+    const defaultTab = "/sentiments";
 
     const getInitialTab = () => {
         const hash = window.location.hash.replace("#", "");
@@ -50,7 +49,6 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Optional: Top Tab Navigation (you can style it like EasyCommerce) */}
             <div className="border-b bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <nav className="flex space-x-8" aria-label="Tabs">
