@@ -4,83 +4,45 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import your pages
+import Dashboard from "./pages/Dashboard"; // Create this component
 import Sentiments from "./pages/Sentiments";
 import Settings from "./pages/Settings";
 
-// Optional: fallback component
-const NotFound = () => (
-    <div className="p-8 text-center">
-        <h2>Page Not Found</h2>
-        <p>The requested tab does not exist.</p>
-    </div>
-);
-
 const App = () => {
-    const validTabs = ["/sentiments", "/settings"];
-    const defaultTab = "/sentiments";
-
-    const getInitialTab = () => {
-        const hash = window.location.hash.replace("#", "");
-        return validTabs.includes(hash) ? hash : defaultTab;
-    };
-
-    const [activeTab, setActiveTab] = useState(getInitialTab);
+    const [activeTab, setActiveTab] = useState("");
 
     useEffect(() => {
         const handleHashChange = () => {
-            const hash = window.location.hash.replace("#", "");
-            if (validTabs.includes(hash)) {
-                setActiveTab(hash);
-            } else if (hash === "") {
-                setActiveTab(defaultTab);
-                window.location.hash = defaultTab;
-            } else {
-                // Invalid route → redirect to default
-                setActiveTab(defaultTab);
-                window.location.hash = defaultTab;
-            }
+            const hash = window.location.hash.replace("#", "") || "";
+            setActiveTab(hash);
         };
 
         window.addEventListener("hashchange", handleHashChange);
-        handleHashChange(); // run on mount
+        handleHashChange(); // Run on mount
 
         return () => window.removeEventListener("hashchange", handleHashChange);
     }, []);
 
+    // Render component based on active tab
+    const renderContent = () => {
+        switch (activeTab) {
+            case "":
+            case "/":
+                return <Dashboard />;
+            case "/sentiments":
+                return <Sentiments />;
+            case "/settings":
+                return <Settings />;
+            default:
+                return <Dashboard />;
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="border-b bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <nav className="flex space-x-8" aria-label="Tabs">
-                        <a
-                            href="#/sentiments"
-                            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                                activeTab === "/sentiments"
-                                    ? "border-indigo-500 text-indigo-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
-                        >
-                            Sentiments
-                        </a>
-                        <a
-                            href="#/settings"
-                            className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                                activeTab === "/settings"
-                                    ? "border-indigo-500 text-indigo-600"
-                                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                            }`}
-                        >
-                            Settings
-                        </a>
-                    </nav>
-                </div>
-            </div>
-
             <div className="py-6">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {activeTab === "/sentiments" && <Sentiments />}
-                    {activeTab === "/settings" && <Settings />}
-                    {!validTabs.includes(activeTab) && <NotFound />}
+                    {renderContent()}
                 </div>
             </div>
 

@@ -9,6 +9,7 @@ class Menu {
 
     public function __construct() {
         $this->action( 'admin_menu', [ $this, 'register_menus' ] );
+        // $this->action( 'admin_enqueue_scripts', [ $this, 'enqueue_menu_script' ] );
     }
 
     public function register_menus() {
@@ -17,13 +18,13 @@ class Menu {
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
             'manage_options',
-            'sentiment-analyzer',                    // parent slug
+            'sentiment-analyzer',
             [ $this, 'render_main_page' ],
             'dashicons-chart-line',
             30
         );
 
-        // Submenus (visible in WP admin sidebar)
+        // Dashboard submenu
         add_submenu_page(
             'sentiment-analyzer',
             __( 'Dashboard', 'sentiment-analyzer' ),
@@ -33,31 +34,68 @@ class Menu {
             [ $this, 'render_main_page' ]
         );
 
+        // All Sentiments submenu
         add_submenu_page(
             'sentiment-analyzer',
-            __( 'Sentiments', 'sentiment-analyzer' ),
-            __( 'Sentiments', 'sentiment-analyzer' ),
+            __( 'All Sentiments', 'sentiment-analyzer' ),
+            __( 'All Sentiments', 'sentiment-analyzer' ),
             'manage_options',
             'sentiment-analyzer#/sentiments',
             [ $this, 'render_main_page' ]
         );
 
-        // add_submenu_page(
-        //     'sentiment-analyzer',
-        //     __( 'Settings', 'sentiment-analyzer' ),
-        //     __( 'Settings', 'sentiment-analyzer' ),
-        //     'manage_options',
-        //     'sentiment-analyzer#/settings',
-        //     [ $this, 'render_main_page' ]
-        // );
+        // Settings submenu
+        add_submenu_page(
+            'sentiment-analyzer',
+            __( 'Settings', 'sentiment-analyzer' ),
+            __( 'Settings', 'sentiment-analyzer' ),
+            'manage_options',
+            'sentiment-analyzer#/settings',
+            [ $this, 'render_main_page' ]
+        );
+    }
 
-        // You can add more like #/reports, #/help, etc.
+    public function render_main_page() {
+        echo '<div class="wrap"><div id="sentiment-root">Loading...</div></div>';
     }
 
     /**
-     * Render the React container (same for all submenu pages)
+     * Enqueue script to handle hash-based navigation in WordPress admin menu
      */
-    public function render_main_page() {
-        echo '<div class="wrap"><div id="sentiment-root"></div></div>';
+    public function enqueue_menu_script() {
+        $screen = get_current_screen();
+        
+        // Only load on our plugin pages
+        if ( ! $screen || strpos( $screen->id, 'sentiment-analyzer' ) === false ) {
+            return;
+        }
+
+        // Inline script to handle menu clicks
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Handle clicks on menu items with hash routes
+            $('#adminmenu a[href*="sentiment-analyzer#"]').on('click', function(e) {
+                e.preventDefault();
+                
+                var href = $(this).attr('href');
+                var hashPart = href.split('#')[1];
+                
+                // Update the URL hash without page reload
+                window.location.hash = '#' + hashPart;
+                
+                // Update active menu item
+                $('#adminmenu .wp-submenu li').removeClass('current');
+                $(this).parent().addClass('current');
+            });
+
+            // Set active menu item based on current hash on page load
+            var currentHash = window.location.hash;
+            if (currentHash) {
+                $('#adminmenu a[href*="' + currentHash + '"]').parent().addClass('current');
+            }
+        });
+        </script>
+        <?php
     }
 }
