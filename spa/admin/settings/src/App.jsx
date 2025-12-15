@@ -4,7 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import your pages
-import Dashboard from "./pages/Dashboard"; // Create this component
+import Overview from "./pages/Overview"; // New Overview/Landing page
+import Dashboard from "./pages/Dashboard";
 import Sentiments from "./pages/Sentiments";
 import Settings from "./pages/Settings";
 
@@ -18,23 +19,24 @@ const App = () => {
         };
 
         window.addEventListener("hashchange", handleHashChange);
-        handleHashChange(); // Run on mount
+        handleHashChange();
 
         return () => window.removeEventListener("hashchange", handleHashChange);
     }, []);
 
-    // Render component based on active tab
     const renderContent = () => {
         switch (activeTab) {
             case "":
             case "/":
-                return <Dashboard />;
+                return <Overview />; // Main menu page (no hash)
+            case "/dashboard":
+                return <Dashboard />; // Dashboard with hash
             case "/sentiments":
                 return <Sentiments />;
             case "/settings":
                 return <Settings />;
             default:
-                return <Dashboard />;
+                return <Overview />;
         }
     };
 

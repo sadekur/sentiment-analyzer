@@ -13,7 +13,7 @@ class Menu {
     }
 
     public function register_menus() {
-        // Main top-level menu
+        // Main top-level menu (Overview/Landing page - NO hash)
         add_menu_page(
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
             __( 'Sentiment Analyzer', 'sentiment-analyzer' ),
@@ -24,13 +24,23 @@ class Menu {
             30
         );
 
-        // Dashboard submenu
+        // Overview submenu (same as parent - NO hash)
+        add_submenu_page(
+            'sentiment-analyzer',
+            __( 'Overview', 'sentiment-analyzer' ),
+            __( 'Overview', 'sentiment-analyzer' ),
+            'manage_options',
+            'sentiment-analyzer',
+            [ $this, 'render_main_page' ]
+        );
+
+        // Dashboard submenu (WITH hash)
         add_submenu_page(
             'sentiment-analyzer',
             __( 'Dashboard', 'sentiment-analyzer' ),
             __( 'Dashboard', 'sentiment-analyzer' ),
             'manage_options',
-            'sentiment-analyzer',
+            'sentiment-analyzer#/dashboard',
             [ $this, 'render_main_page' ]
         );
 
@@ -89,10 +99,33 @@ class Menu {
                 $(this).parent().addClass('current');
             });
 
+            // Handle clicks on main menu without hash (Overview)
+            $('#adminmenu a[href="admin.php?page=sentiment-analyzer"]').on('click', function(e) {
+                var currentPage = window.location.href.split('?')[1]?.split('#')[0];
+                
+                // Only prevent default if we're already on the page
+                if (currentPage === 'page=sentiment-analyzer') {
+                    e.preventDefault();
+                    
+                    // Clear the hash and go to overview
+                    window.location.hash = '';
+                    
+                    // Update active menu item
+                    $('#adminmenu .wp-submenu li').removeClass('current');
+                    $(this).parent().addClass('current');
+                }
+                // Otherwise, let it navigate normally (page reload)
+            });
+
             // Set active menu item based on current hash on page load
             var currentHash = window.location.hash;
+            
             if (currentHash) {
+                // If there's a hash, highlight that menu item
                 $('#adminmenu a[href*="' + currentHash + '"]').parent().addClass('current');
+            } else {
+                // If no hash, highlight the Overview menu item
+                $('#adminmenu a[href="admin.php?page=sentiment-analyzer"]').parent().addClass('current');
             }
         });
         </script>
