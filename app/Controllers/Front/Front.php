@@ -11,14 +11,14 @@ class Front {
      * Constructor to add all hooks.
      */
     public function __construct() {
-        $this->action( 'save_post', array( $this, 'analyze_post_sentiment' ) );
+        $this->action( 'save_post', array( $this, 'analyze_post_sentiment', 10, 3 ) );
         $this->filter( 'the_content', array( $this, 'add_sentiment_badge' ) );
     }
 
     /**
      * Analyze post sentiment (hooks into save_post)
      */
-    public function analyze_post_sentiment($post_id, $post, $update) {
+    public function analyze_post_sentiment( $post_id, $post, $update ) {
         // Skip auto-saves and revisions
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
