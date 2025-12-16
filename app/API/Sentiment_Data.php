@@ -4,7 +4,7 @@ namespace Sentiment\API;
 defined( 'ABSPATH' ) || exit;
 
 use Sentiment\Traits\Rest;
-use Sentiment\Models\Sentiment_Data as Sentiment_Data_Model;
+use Sentiment\Models\Sentiment_Model as Sentiment_Data_Model;
 
 class Sentiment_Data {
 
@@ -224,7 +224,7 @@ class Sentiment_Data {
         $total_pages = ceil( $result['total'] / $per_page );
 
         // Get sentiment counts for all types
-        $sentiment_counts = Sentiment_::get_sentiment_counts();
+        $sentiment_counts = Sentiment_Data_Model::get_sentiment_counts();
 
         /**
          * Filters the posts list.
