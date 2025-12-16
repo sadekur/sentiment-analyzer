@@ -1,5 +1,6 @@
 <?php
 namespace Sentiment\Controllers\Common;
+use WP_REST_Server;
 use Sentiment\API\Sentiment_Data;
 use Sentiment\Traits\Rest;
 
@@ -106,30 +107,73 @@ class API {
 
         // Get posts by sentiment
         $this->register_route(
-            '/posts/(?P<sentiment>positive|negative|neutral )', array(
-            'methods' => 'GET',
-			'callback' => array( new Sentiment_Data(), 'get_posts_by_sentiment' ),
-            'permission_callback' => '__return_true',
-            'args' => array(
-                'sentiment' => array(
-                    'validate_callback' => function( $param ) {
-                        return in_array( $param, array( 'positive', 'negative', 'neutral' ) );
-                    }
+            '/posts',
+            array(
+                'methods'    => WP_REST_Server::READABLE,
+                'callback'   => array( new Sentiment_Data(), 'list' ),
+                'args'       => array(
+                    'sentiment' => array(
+                        'description'       => __( 'Filter by sentiment type', 'sentiment-analyzer' ),
+                        'required'          => false,
+                        'type'              => 'string',
+                        'enum'              => array( 'positive', 'negative', 'neutral' ),
+                        'validate_callback' => function( $param ) {
+                            if ( empty( $param ) ) {
+                                return true;
+                            }
+                            return in_array( $param, array( 'positive', 'negative', 'neutral' ) );
+                        }
+                    ),
+                    'page' => array(
+                        'description' => __( 'Page number for pagination', 'sentiment-analyzer' ),
+                        'required'    => false,
+                        'type'        => 'integer',
+                        'default'     => 1,
+                    ),
+                    'per_page' => array(
+                        'description' => __( 'Number of posts per page', 'sentiment-analyzer' ),
+                        'required'    => false,
+                        'type'        => 'integer',
+                        'default'     => 10,
+                    ),
+                    'sort' => array(
+                        'description' => __( 'Sort order', 'sentiment-analyzer' ),
+                        'required'    => false,
+                        'type'        => 'string',
+                        'default'     => 'desc',
+                        'enum'        => array( 'asc', 'desc' ),
+                    ),
+                    'from_date' => array(
+                        'description' => __( 'Filter by from date', 'sentiment-analyzer' ),
+                        'required'    => false,
+                        'type'        => 'string',
+                    ),
+                    'to_date' => array(
+                        'description' => __( 'Filter by to date', 'sentiment-analyzer' ),
+                        'required'    => false,
+                        'type'        => 'string',
+                    ),
                 ),
-                'page' => array(
-                    'default' => 1,
-                    'validate_callback' => function( $param ) {
-                        return is_numeric( $param ) && $param > 0;
-                    }
+                'permission_callback' => '__return_true',
+            )
+        );
+
+        // Get single post sentiment details
+        $this->register_route(
+            '/posts/(?P<id>\d+)',
+            array(
+                'methods'    => WP_REST_Server::READABLE,
+                'callback'   => array( new Sentiment_Data(), 'get' ),
+                'args'       => array(
+                    'id' => array(
+                        'description' => __( 'The post ID', 'sentiment-analyzer' ),
+                        'required'    => true,
+                        'type'        => 'integer',
+                    ),
                 ),
-                'per_page' => array(
-                    'default' => 10,
-                    'validate_callback' => function( $param ) {
-                        return is_numeric( $param ) && $param > 0 && $param <= 100;
-                    }
-                ),
-            ),
-        ) );
+                'permission_callback' => '__return_true',
+            )
+        );
     }
 
     /**

@@ -167,7 +167,7 @@ class Sentiment_Data {
     /**
      * Get posts by sentiment
      */
-    public function get_posts_by_sentiment( $request ) {
+    public function all_analyzed( $request ) {
         $sentiment      = $request->get_param( 'sentiment' );
         $page           = $request->get_param( 'page' );
         $per_page       = $request->get_param( 'per_page' );
