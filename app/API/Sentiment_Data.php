@@ -4,6 +4,7 @@ namespace Sentiment\API;
 defined( 'ABSPATH' ) || exit;
 
 use Sentiment\Traits\Rest;
+use Sentiment\Models\Sentiment_Data as Sentiment_Data_Model;
 
 class Sentiment_Data {
 
@@ -167,63 +168,119 @@ class Sentiment_Data {
     /**
      * Get posts by sentiment
      */
-    public function all_analyzed( $request ) {
-        $sentiment      = $request->get_param( 'sentiment' );
-        $page           = $request->get_param( 'page' );
-        $per_page       = $request->get_param( 'per_page' );
-        $cache_key      = 'sa_posts_' . $sentiment . '_page_' . $page . '_per_' . $per_page;
-        $cached_data    = get_transient( $cache_key );
+     public function list( $request ) {
+        $sentiment  = $request->get_param( 'sentiment' );
+        $page       = $request->get_param( 'page' ) ?: 1;
+        $per_page   = $request->get_param( 'per_page' ) ?: 10;
+        $sort       = $request->get_param( 'sort' ) ?: 'desc';
+        $from_date  = $request->get_param( 'from_date' );
+        $to_date    = $request->get_param( 'to_date' );
+        
+        $filters = array();
 
-        if ( $cached_data !== false ) {
-            return rest_ensure_response( $cached_data );
+        if ( ! empty( $sentiment ) ) {
+            $filters['sentiment'] = $sentiment;
         }
 
-        // Query posts
-        $args = array(
-            'post_type' => 'post',
-            'post_status' => 'publish',
-            'posts_per_page' => $per_page,
-            'paged' => $page,
-            'meta_query' => array(
-                array(
-                    'key' => '_post_sentiment',
-                    'value' => $sentiment,
-                    'compare' => '='
-                )
-            )
-        );
+        if ( ! empty( $from_date ) ) {
+            $filters['from_date'] = $from_date;
+        }
 
-        $query = new \WP_Query( $args );
-        $posts = array();
+        if ( ! empty( $to_date ) ) {
+            $filters['to_date'] = $to_date;
+        }
 
-        if ( $query->have_posts() ) {
-            while ( $query->have_posts() ) {
-                $query->the_post();
-                $posts[] = array(
-                    'id'        => get_the_ID(),
-                    'title'     => get_the_title(),
-                    'excerpt'   => get_the_excerpt(),
-                    'permalink' => get_permalink(),
-                    'date'      => get_the_date(),
-                    'sentiment' => $sentiment,
+        // Get posts using the model method
+        $result = Sentiment_Data_Model::list( $filters, $per_page, ( $page - 1 ) * $per_page, $sort );
+
+        if ( empty( $result['posts'] ) ) {
+            return rest_ensure_response( array(
+                'success'          => true,
+                'message'          => __( 'No posts found.', 'sentiment-analyzer' ),
+                'posts'            => array(),
+                'total'            => 0,
+                'page'             => $page,
+                'per_page'         => $per_page,
+                'total_pages'      => 0,
+                'sentiment_counts' => Sentiment_Data_Model::get_sentiment_counts(),
+            ) );
+        }
+
+        $formatted_posts = array_map(
+            function( $post ) {
+                return array(
+                    'id'        => $post->ID,
+                    'title'     => get_the_title( $post->ID ),
+                    'excerpt'   => get_the_excerpt( $post->ID ),
+                    'permalink' => get_permalink( $post->ID ),
+                    'date'      => get_the_date( '', $post->ID ),
+                    'sentiment' => get_post_meta( $post->ID, '_post_sentiment', true ),
+                    'author'    => get_the_author_meta( 'display_name', $post->post_author ),
                 );
-            }
-            wp_reset_postdata();
-        }
-
-        $response_data = array(
-            'success'       => true,
-            'posts'         => $posts,
-            'total'         => $query->found_posts,
-            'pages'         => $query->max_num_pages,
-            'current_page'  => $page,
-            'per_page'      => $per_page,
+            },
+            $result['posts']
         );
 
-        // Cache for 1 hour
-        set_transient( $cache_key, $response_data, HOUR_IN_SECONDS );
+        $total_pages = ceil( $result['total'] / $per_page );
 
-        return rest_ensure_response( $response_data );
+        // Get sentiment counts for all types
+        $sentiment_counts = Sentiment_::get_sentiment_counts();
+
+        /**
+         * Filters the posts list.
+         *
+         * @since 1.0.0
+         * @param array $formatted_posts The formatted posts.
+         * @param \WP_REST_Request $request The request object.
+         */
+        $formatted_posts = apply_filters( 'sentiment_analyzer_list_posts', $formatted_posts, $request );
+
+        return rest_ensure_response(
+            array(
+                'success'          => true,
+                'posts'            => $formatted_posts,
+                'total'            => $result['total'],
+                'page'             => $page,
+                'per_page'         => $per_page,
+                'total_pages'      => $total_pages,
+                'sentiment_counts' => $sentiment_counts,
+            ),
+            200
+        );
+    }
+
+    /**
+     * Get a single post sentiment details
+     *
+     * @param \WP_REST_Request $request
+     * @return \WP_REST_Response
+     */
+    public function get( $request ) {
+        $post_id = $request->get_param( 'id' );
+        $post = get_post( $post_id );
+
+        if ( ! $post || $post->post_status !== 'publish' ) {
+            return rest_ensure_response( array(
+                'success' => false,
+                'message' => __( 'Post not found.', 'sentiment-analyzer' ),
+            ), 404 );
+        }
+
+        $sentiment = get_post_meta( $post_id, '_post_sentiment', true );
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'post'    => array(
+                'id'        => $post->ID,
+                'title'     => get_the_title( $post_id ),
+                'content'   => apply_filters( 'the_content', $post->post_content ),
+                'excerpt'   => get_the_excerpt( $post_id ),
+                'permalink' => get_permalink( $post_id ),
+                'date'      => get_the_date( '', $post_id ),
+                'sentiment' => $sentiment,
+                'author'    => get_the_author_meta( 'display_name', $post->post_author ),
+            ),
+        ) );
     }
 
     /**

@@ -12,72 +12,37 @@ const Overview = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
     const perPage = 10;
-
-    // Fetch counts for all sentiment types
-    const fetchCounts = async () => {
-        try {
-            const sentiments = ['positive', 'neutral', 'negative'];
-            const countPromises = sentiments.map(sentiment =>
-                fetch(`${SENTIMENT_ANALYZER?.apiUrl}/posts/${sentiment}?per_page=${perPage}`, {
-                    headers: {
-                        "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
-                    },
-                })
-                    .then(res => res.json())
-                    .then(data => ({ [sentiment]: data.total || 0 }))
-            );
-
-            const results = await Promise.all(countPromises);
-            const countsData = results.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-            
-            // Calculate total
-            const total = countsData.positive + countsData.neutral + countsData.negative;
-            
-            setCounts({
-                all: total,
-                ...countsData
-            });
-        } catch (error) {
-            console.error('Error fetching counts:', error);
-        }
-    };
 
     // Fetch posts based on active tab
     const fetchPosts = async (sentiment, page = 1) => {
         setLoading(true);
         try {
-            if (sentiment === 'all') {
-                // For "all", we need to fetch from all three endpoints and combine
-                const sentiments = ['positive', 'neutral', 'negative'];
-                const promises = sentiments.map(s =>
-                    fetch(`${SENTIMENT_ANALYZER?.apiUrl}/posts/${s}?page=${page}&per_page=${perPage}`, {
-                        headers: {
-                            "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
-                        },
-                    }).then(res => res.json())
-                );
+            // Build URL with parameters
+            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${perPage}`;
+            
+            // Add sentiment filter only if not "all"
+            if (sentiment !== 'all') {
+                url += `&sentiment=${sentiment}`;
+            }
+
+            const response = await fetch(url, {
+                headers: {
+                    "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
+                },
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                setPosts(data.posts || []);
+                setTotal(data.total || 0);
+                setTotalPages(data.total_pages || 1);
                 
-                const results = await Promise.all(promises);
-                const allPosts = results.flatMap(result => result.posts || []);
-                const totalCount = counts.all;
-                
-                setPosts(allPosts);
-                setTotalPages(Math.ceil(totalCount / perPage));
-            } else {
-                const response = await fetch(
-                    `${SENTIMENT_ANALYZER?.apiUrl}/posts/${sentiment}?page=${page}&per_page=${perPage}`,
-                    {
-                        headers: {
-                            "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
-                        },
-                    }
-                );
-                const data = await response.json();
-                
-                if (data.success) {
-                    setPosts(data.posts);
-                    setTotalPages(data.pages);
+                // Update counts from the response
+                if (data.sentiment_counts) {
+                    setCounts(data.sentiment_counts);
                 }
             }
         } catch (error) {
@@ -89,11 +54,6 @@ const Overview = () => {
     };
 
     // Initial load
-    useEffect(() => {
-        fetchCounts();
-    }, []);
-
-    // Fetch posts when tab or page changes
     useEffect(() => {
         fetchPosts(activeTab, currentPage);
     }, [activeTab, currentPage]);
@@ -193,11 +153,12 @@ const Overview = () => {
                                             </p>
                                             <div className="flex items-center gap-4 text-sm text-gray-500">
                                                 <span>📅 {post.date}</span>
+                                                <span>✍️ {post.author}</span>
                                                 <span>ID: {post.id}</span>
                                             </div>
                                         </div>
-                                        <a
-                                            href={post.permalink}
+                                        
+                                            <a href={post.permalink}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="ml-4 px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
@@ -213,7 +174,7 @@ const Overview = () => {
                         {totalPages > 1 && (
                             <div className="flex items-center justify-between mt-6 pt-6 border-t">
                                 <div className="text-sm text-gray-600">
-                                    Page {currentPage} of {totalPages}
+                                    Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, total)} of {total} posts
                                 </div>
                                 <div className="flex gap-2">
                                     <button
@@ -229,6 +190,9 @@ const Overview = () => {
                                     >
                                         Previous
                                     </button>
+                                    <span className="px-4 py-2 text-sm text-gray-700">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
                                     <button
                                         onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                                         disabled={currentPage === totalPages}
