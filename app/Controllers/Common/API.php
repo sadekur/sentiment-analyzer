@@ -27,28 +27,31 @@ class API {
      */
     public function register_routes() {
         // Update settings
-		$this->register_route('/settings', array(
-            'methods' => 'POST',
-			'callback' => array( new Sentiment_Data(), 'update_settings' ),
-            'permission_callback' => array( $this, 'check_permission' ),
-            'args' => array(
-                'positive_keywords' => array(
-                    'sanitize_callback' => 'sanitize_textarea_field',
+		$this->register_route(
+            '/settings',
+            array(
+                'methods' => 'POST',
+                'callback' => array( new Sentiment_Data(), 'update_settings' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args' => array(
+                    'positive_keywords' => array(
+                        'sanitize_callback' => 'sanitize_textarea_field',
+                    ),
+                    'negative_keywords' => array(
+                        'sanitize_callback' => 'sanitize_textarea_field',
+                    ),
+                    'neutral_keywords' => array(
+                        'sanitize_callback' => 'sanitize_textarea_field',
+                    ),
+                    'badge_position' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'validate_callback' => function( $param ) {
+                            return in_array( $param, array( 'top', 'bottom', 'none' ) );
+                        }
+                    ),
                 ),
-                'negative_keywords' => array(
-                    'sanitize_callback' => 'sanitize_textarea_field',
-                ),
-                'neutral_keywords' => array(
-                    'sanitize_callback' => 'sanitize_textarea_field',
-                ),
-                'badge_position' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
-                    'validate_callback' => function( $param ) {
-                        return in_array( $param, array( 'top', 'bottom', 'none' ) );
-                    }
-                ),
-            ),
-        ));
+            )
+        );
 
         // Get settings
 		register_rest_route( $this->namespace, '/settings', array(
@@ -93,14 +96,17 @@ class API {
         ) );
 
         // Clear cache
-        register_rest_route($this->namespace, '/cache/clear', array(
+        register_rest_route(
+            $this->namespace,
+            '/cache/clear', array(
             'methods' => 'POST',
 			'callback'   => array( new Sentiment_Data(), 'clear_cache' ),
             'permission_callback' => array( $this, 'check_permission' ),
         ));
 
         // Get posts by sentiment
-        register_rest_route( $this->namespace, '/posts/(?P<sentiment>positive|negative|neutral )', array(
+        $this->register_route(
+            '/posts/(?P<sentiment>positive|negative|neutral )', array(
             'methods' => 'GET',
 			'callback' => array( new Sentiment_Data(), 'get_posts_by_sentiment' ),
             'permission_callback' => '__return_true',

@@ -19,7 +19,7 @@ const Overview = () => {
         try {
             const sentiments = ['positive', 'neutral', 'negative'];
             const countPromises = sentiments.map(sentiment =>
-                fetch(`${SENTIMENT_ANALYZER?.apiUrl}/posts/${sentiment}?per_page=1`, {
+                fetch(`${SENTIMENT_ANALYZER?.apiUrl}/posts/${sentiment}?per_page=${perPage}`, {
                     headers: {
                         "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
                     },
