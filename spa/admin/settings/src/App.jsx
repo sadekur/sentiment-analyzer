@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 
 const App = () => {
     const [activeTab, setActiveTab] = useState("");
+    const [page, setPage] = useState(1);
 
     const getPageFromPath = (path) => {
         const pageRegex = /\/page\/(\d+)$/;
@@ -33,19 +34,18 @@ const App = () => {
     }, []);
 
     const renderContent = () => {
-        let PageComponent = null;
         switch (activeTab) {
             case "":
             case "/":
-                PageComponent = () => <Overview />;
+                return <Overview page={page} />;
             case "/dashboard":
-                return PageComponent = () => <Dashboard page= {getPageFromPath(activeTab)} />;
+                return <Dashboard page={page} />;
             case "/sentiments":
-                PageComponent = () => <Sentiments />;
+                return <Sentiments page={page} />;
             case "/settings":
                 return <Settings />;
             default:
-                return <Overview />;
+                return <Overview page={page} />;
         }
     };
 
