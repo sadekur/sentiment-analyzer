@@ -1,6 +1,6 @@
 import React from "react";
 
-const PageNumbers = ({ total = 1, current = 1, baseSlug = "products" }) => {
+const PageNumbers = ({ total = 1, current = 1, baseSlug = "dashboard" }) => {
     const pageNumbers = [];
 
     // Always add the first page
