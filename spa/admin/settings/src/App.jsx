@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import your pages
-import Overview from "./pages/Overview"; // New Overview/Landing page
+import Overview from "./pages/Overview";
 import Dashboard from "./pages/Dashboard";
 import Sentiments from "./pages/Sentiments";
 import Settings from "./pages/Settings";
@@ -12,9 +12,17 @@ import Settings from "./pages/Settings";
 const App = () => {
     const [activeTab, setActiveTab] = useState("");
 
+    const getPageFromPath = (path) => {
+        const pageRegex = /\/page\/(\d+)$/;
+        const match = path.match(pageRegex);
+        return match ? Number(match[1]) : 1;
+    };
+
     useEffect(() => {
         const handleHashChange = () => {
             const hash = window.location.hash.replace("#", "") || "";
+             const [hashPath] = hash.split("/page/");
+            const currentPage = getPageFromPath(hash);
             setActiveTab(hash);
         };
 
@@ -25,14 +33,15 @@ const App = () => {
     }, []);
 
     const renderContent = () => {
+        let PageComponent = null;
         switch (activeTab) {
             case "":
             case "/":
-                return <Overview />; // Main menu page (no hash)
+                PageComponent = () => <Overview />;
             case "/dashboard":
-                return <Dashboard />; // Dashboard with hash
+                return PageComponent = () => <Dashboard page= {getPageFromPath(activeTab)} />;
             case "/sentiments":
-                return <Sentiments />;
+                PageComponent = () => <Sentiments />;
             case "/settings":
                 return <Settings />;
             default:

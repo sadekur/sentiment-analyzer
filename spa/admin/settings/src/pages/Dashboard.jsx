@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const Dashboard = () => {
+const Dashboard = ({ page }) => {
+  console.log("Current Page:", page);
     const [activeTab, setActiveTab] = useState("all");
     const [counts, setCounts] = useState({
         all: 0,
@@ -13,14 +14,14 @@ const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
-    const perPage = 10;
+    const [postPerPage, setPostPerPage] = useState(10);
 
     // Fetch posts based on active tab
     const fetchPosts = async (sentiment, page = 1) => {
         setLoading(true);
         try {
             // Build URL with parameters
-            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${perPage}`;
+            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${postPerPage}`;
             
             // Add sentiment filter only if not "all"
             if (sentiment !== 'all') {
@@ -174,7 +175,7 @@ const Dashboard = () => {
                         {totalPages > 1 && (
                             <div className="flex items-center justify-between mt-6 pt-6 border-t">
                                 <div className="text-sm text-gray-600">
-                                    Showing {((currentPage - 1) * perPage) + 1} to {Math.min(currentPage * perPage, total)} of {total} posts
+                                    Showing {((currentPage - 1) * postPerPage) + 1} to {Math.min(currentPage * postPerPage, total)} of {total} posts
                                 </div>
                                 <div className="flex gap-2">
                                     <button
