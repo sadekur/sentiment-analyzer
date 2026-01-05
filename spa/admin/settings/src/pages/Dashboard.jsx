@@ -13,7 +13,7 @@ const Dashboard = ({ page }) => {
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
-    const postPerPage = 2;
+    const [postPerPage, setPostPerPage] = useState(2);
 
     // Fetch posts based on active tab and page
     const fetchPosts = async (sentiment, currentPage) => {
