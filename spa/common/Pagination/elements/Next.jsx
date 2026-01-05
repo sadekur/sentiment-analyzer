@@ -1,8 +1,8 @@
 import React from "react";
 
-const nextIcon = `${SENTIMENT_ANALYZER.assets}admin/img/icons/Next.png`;
+export default function Next({ baseSlug = "dashboard", current = 1, total = 1, assets = "" }) {
+    const nextIcon = `${assets}admin/img/icons/Next.png`;
 
-export default function Next({ baseSlug = "dashboard", current = 1, total = 1 }) {
     return (
         <>
             {current < total ? (

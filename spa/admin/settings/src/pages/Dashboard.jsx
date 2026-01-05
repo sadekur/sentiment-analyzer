@@ -213,6 +213,7 @@ const Dashboard = ({ page }) => {
                                 baseSlug="dashboard"
                                 current={page}
                                 total={totalPages}
+                                assets={SENTIMENT_ANALYZER?.assets}
                             />
                         )}
                     </>
