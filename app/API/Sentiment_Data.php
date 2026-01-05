@@ -168,10 +168,10 @@ class Sentiment_Data {
     /**
      * Get posts by sentiment
      */
-     public function list( $request ) {
+    public function list( $request ) {
         $sentiment  = $request->get_param( 'sentiment' );
         $page       = $request->get_param( 'page' ) ?: 1;
-        $per_page   = $request->get_param( 'per_page' ) ?: 10;
+        $per_page   = $request->get_param( 'per_page' ) ?: 2;
         $sort       = $request->get_param( 'sort' ) ?: 'desc';
         $from_date  = $request->get_param( 'from_date' );
         $to_date    = $request->get_param( 'to_date' );

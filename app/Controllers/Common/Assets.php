@@ -25,20 +25,20 @@ class Assets {
 			'rest_base'       => esc_url_raw( get_rest_url() ),
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 			'logout_url'      => wp_logout_url(),
-			'apiUrl' => rest_url('sentiment-analyzer/v1'),
+			'apiUrl' 		  => rest_url('sentiment-analyzer/v1'),
 			'ajax_url'        => admin_url( 'admin-ajax.php' ),
 			'assets'          => SENTIMENT_ANALYZER_URL . 'assets/',
 			'plugin_url'      => SENTIMENT_ANALYZER_URL,
-			'strings' => array(
-				'bulkUpdating' => __('Analyzing posts...', 'sentiment-analyzer'),
-				'bulkSuccess' => __('Successfully analyzed {count} posts!', 'sentiment-analyzer'),
-				'bulkError' => __('Error analyzing posts. Please try again.', 'sentiment-analyzer'),
+			'strings' 		  => array(
+				'bulkUpdating' 	=> __('Analyzing posts...', 'sentiment-analyzer'),
+				'bulkSuccess' 	=> __('Successfully analyzed {count} posts!', 'sentiment-analyzer'),
+				'bulkError' 	=> __('Error analyzing posts. Please try again.', 'sentiment-analyzer'),
 				'cacheClearing' => __('Clearing cache...', 'sentiment-analyzer'),
-				'cacheSuccess' => __('Cache cleared successfully!', 'sentiment-analyzer'),
-				'cacheError' => __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
-				'confirm' => __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
-				'saveSuccess' => __('Settings saved successfully!', 'sentiment-analyzer'),
-        		'saveError'   => __('Failed to save settings.', 'sentiment-analyzer'),
+				'cacheSuccess' 	=> __('Cache cleared successfully!', 'sentiment-analyzer'),
+				'cacheError' 	=> __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
+				'confirm' 		=> __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
+				'saveSuccess' 	=> __('Settings saved successfully!', 'sentiment-analyzer'),
+        		'saveError'   	=> __('Failed to save settings.', 'sentiment-analyzer'),
 			),
 		);
 
@@ -51,7 +51,7 @@ class Assets {
 			$load_common_assets = true;
 
 			// Enqueue admin-specific CSS (if exists, otherwise skip)
-			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/admin/css/settings.css')) {
+			if ( file_exists(SENTIMENT_ANALYZER_PATH . 'assets/admin/css/settings.css' ) ) {
 				wp_enqueue_style(
 					'sentiment-analyzer-settings',
 					SENTIMENT_ANALYZER_ASSETS . '/admin/css/settings.css',

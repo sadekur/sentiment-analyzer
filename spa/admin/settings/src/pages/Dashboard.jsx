@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Pagination from "../../../../common/Pagination";
 
 const Dashboard = ({ page }) => {
-  console.log("Current Page:", page);
     const [activeTab, setActiveTab] = useState("all");
     const [counts, setCounts] = useState({
         all: 0,
@@ -12,16 +11,15 @@ const Dashboard = ({ page }) => {
     });
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
-    const [postPerPage, setPostPerPage] = useState(2);
+    const postPerPage = 2;
 
-    // Fetch posts based on active tab
-    const fetchPosts = async (sentiment, page = 1) => {
+    // Fetch posts based on active tab and page
+    const fetchPosts = async (sentiment, currentPage) => {
         setLoading(true);
         try {
-            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${postPerPage}`;
+            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${currentPage}&per_page=${postPerPage}`;
 
             if (sentiment !== 'all') {
                 url += `&sentiment=${sentiment}`;
@@ -52,14 +50,15 @@ const Dashboard = ({ page }) => {
         }
     };
 
-    // Initial load
+    // Fetch when activeTab or page changes
     useEffect(() => {
-        fetchPosts(activeTab, currentPage);
-    }, [activeTab, currentPage]);
+        fetchPosts(activeTab, page);
+    }, [activeTab, page]); // Watch both activeTab and page
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        setCurrentPage(1);
+        // Reset to page 1 when changing tabs
+        window.location.hash = `#/dashboard`;
     };
 
     const getSentimentBadgeClass = (sentiment) => {
@@ -86,7 +85,7 @@ const Dashboard = ({ page }) => {
                     Sentiment Posts
                 </h1>
                 <p className="text-gray-600 mt-1">
-                    View and manage all posts with sentiment analysis
+                    View and manage all posts with sentiment analysis (Page: {page})
                 </p>
             </div>
 
@@ -157,7 +156,8 @@ const Dashboard = ({ page }) => {
                                             </div>
                                         </div>
                                         
-                                            <a href={post.permalink}
+                                        <a 
+                                            href={post.permalink}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="ml-4 px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
@@ -170,50 +170,11 @@ const Dashboard = ({ page }) => {
                         </div>
 
                         {/* Pagination */}
-                        {/* {totalPages > 1 && (
-                            <div className="flex items-center justify-between mt-6 pt-6 border-t">
-                                <div className="text-sm text-gray-600">
-                                    Showing {((currentPage - 1) * postPerPage) + 1} to {Math.min(currentPage * postPerPage, total)} of {total} posts
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                                        disabled={currentPage === 1}
-                                        className={`
-                                            px-4 py-2 text-sm rounded border
-                                            ${currentPage === 1
-                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                : 'bg-white text-gray-700 hover:bg-gray-50'
-                                            }
-                                        `}
-                                    >
-                                        Previous
-                                    </button>
-                                    <span className="px-4 py-2 text-sm text-gray-700">
-                                        Page {currentPage} of {totalPages}
-                                    </span>
-                                    <button
-                                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                                        disabled={currentPage === totalPages}
-                                        className={`
-                                            px-4 py-2 text-sm rounded border
-                                            ${currentPage === totalPages
-                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                : 'bg-white text-gray-700 hover:bg-gray-50'
-                                            }
-                                        `}
-                                    >
-                                        Next
-                                    </button>
-                                </div>
-                            </div>
-                        )} */}
                         {totalPages > 1 && (
                             <Pagination
                                 baseSlug="dashboard"
                                 current={page}
                                 total={totalPages}
-                                assets={SENTIMENT_ANALYZER?.assets}
                             />
                         )}
                     </>

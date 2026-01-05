@@ -20,7 +20,7 @@ class Sentiment_Model {
      * @param string $sort Sort order (asc or desc)
      * @return array
      */
-    public static function list( $args = array(), $per_page = 10, $offset = 0, $sort = 'desc' ) {
+    public static function list( $args = array(), $per_page = 2, $offset = 0, $sort = 'desc' ) {
         $sentiment  = isset( $args['sentiment'] ) ? $args['sentiment'] : null;
         $from_date  = isset( $args['from_date'] ) ? trim( $args['from_date'] ) : null;
         $to_date    = isset( $args['to_date'] ) ? trim( $args['to_date'] ) : null;

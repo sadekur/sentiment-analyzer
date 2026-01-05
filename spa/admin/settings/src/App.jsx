@@ -22,9 +22,11 @@ const App = () => {
     useEffect(() => {
         const handleHashChange = () => {
             const hash = window.location.hash.replace("#", "") || "";
-             const [hashPath] = hash.split("/page/");
+            const [hashPath] = hash.split("/page/");
             const currentPage = getPageFromPath(hash);
-            setActiveTab(hash);
+            
+            setActiveTab(hashPath); // Set only the path without /page/X
+            setPage(currentPage);    // Set the page number
         };
 
         window.addEventListener("hashchange", handleHashChange);
