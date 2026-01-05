@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Pagination from "../../../../common/Pagination";
 
 const Dashboard = ({ page }) => {
   console.log("Current Page:", page);
