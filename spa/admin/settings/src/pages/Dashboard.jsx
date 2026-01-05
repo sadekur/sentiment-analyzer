@@ -14,16 +14,14 @@ const Dashboard = ({ page }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
-    const [postPerPage, setPostPerPage] = useState(10);
+    const [postPerPage, setPostPerPage] = useState(2);
 
     // Fetch posts based on active tab
     const fetchPosts = async (sentiment, page = 1) => {
         setLoading(true);
         try {
-            // Build URL with parameters
             let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${postPerPage}`;
-            
-            // Add sentiment filter only if not "all"
+
             if (sentiment !== 'all') {
                 url += `&sentiment=${sentiment}`;
             }
@@ -40,8 +38,7 @@ const Dashboard = ({ page }) => {
                 setPosts(data.posts || []);
                 setTotal(data.total || 0);
                 setTotalPages(data.total_pages || 1);
-                
-                // Update counts from the response
+
                 if (data.sentiment_counts) {
                     setCounts(data.sentiment_counts);
                 }
@@ -172,7 +169,7 @@ const Dashboard = ({ page }) => {
                         </div>
 
                         {/* Pagination */}
-                        {totalPages > 1 && (
+                        {/* {totalPages > 1 && (
                             <div className="flex items-center justify-between mt-6 pt-6 border-t">
                                 <div className="text-sm text-gray-600">
                                     Showing {((currentPage - 1) * postPerPage) + 1} to {Math.min(currentPage * postPerPage, total)} of {total} posts
@@ -209,6 +206,13 @@ const Dashboard = ({ page }) => {
                                     </button>
                                 </div>
                             </div>
+                        )} */}
+                        {totalPages > 1 && (
+                            <Pagination
+                                baseSlug="dashboard"
+                                current={page}
+                                total={totalPages}
+                            />
                         )}
                     </>
                 ) : (
