@@ -85,8 +85,8 @@ class API {
         // Get post sentiment
         register_rest_route( $this->namespace, '/sentiment/(?P<id>\d+)', array(
             'methods' => 'GET',
-			'callback' => array( new Content_Mood_Data(), 'get_sentiment' ),
-            'permission_callback' => '__return_true',
+            'callback' => array( new Content_Mood_Data(), 'get_sentiment' ),
+            'permission_callback' => array( $this, 'check_permission' ),
             'args' => array(
                 'id' => array(
                     'validate_callback' => function( $param ) {
