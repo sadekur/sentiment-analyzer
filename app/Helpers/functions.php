@@ -2,16 +2,16 @@
  /**
  * Clear sentiment cache
  */
-function sa_clear_sentiment_cache() {
+function cma_clear_sentiment_cache() {
     global $wpdb;
     
-    $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_sa_posts_%' OR option_name LIKE '_transient_timeout_sa_posts_%'" );
+    $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_cma_posts_%' OR option_name LIKE '_transient_timeout_cma_posts_%'" );
 }
 
 /**
  * Convert keyword string to array
  */
-function sa_get_keywords_array( $keywords_string ) {
+function cma_get_keywords_array( $keywords_string ) {
     if ( empty( $keywords_string ) ) {
         return array();
     }
@@ -23,7 +23,7 @@ function sa_get_keywords_array( $keywords_string ) {
 /**
  * Count keyword matches in content
  */
-function sa_count_keyword_matches( $content, $keywords ) {
+function cma_count_keyword_matches( $content, $keywords ) {
     $count = 0;
     
     foreach ( $keywords as $keyword ) {
@@ -39,11 +39,11 @@ function sa_count_keyword_matches( $content, $keywords ) {
 /**
  * Get sentiment badge HTML
  */
-function sa_get_sentiment_badge_html( $sentiment ) {
+function cma_get_sentiment_badge_html( $sentiment ) {
     $labels = array(
-        'positive' => __( 'Positive', 'sentiment-analyzer' ),
-        'negative' => __( 'Negative', 'sentiment-analyzer' ),
-        'neutral' => __( 'Neutral', 'sentiment-analyzer' )
+        'positive' => __( 'Positive', 'content-mood-analyzer' ),
+        'negative' => __( 'Negative', 'content-mood-analyzer' ),
+        'neutral' => __( 'Neutral', 'content-mood-analyzer' )
     );
     
     $label = isset( $labels[$sentiment] ) ? $labels[$sentiment] : $labels['neutral'];
@@ -55,7 +55,7 @@ function sa_get_sentiment_badge_html( $sentiment ) {
     );
 }
 
-function sa_get_setting( $key, $default = '' ) {
+function cma_get_setting( $key, $default = '' ) {
         $settings = get_option( 'sentiment_analyzer_settings', array() );
         return isset( $settings[$key] ) ? $settings[$key] : $default;
 }
@@ -63,16 +63,16 @@ function sa_get_setting( $key, $default = '' ) {
 /**
  * Perform sentiment analysis on a post
  */
-function sa_perform_sentiment_analysis( $post ) {
+function cma_perform_sentiment_analysis( $post ) {
     $content = strtolower( $post->post_content . ' ' . $post->post_title );
 
-    $positive_keywords = sa_get_keywords_array( sa_get_setting( 'positive_keywords', '' ) );
-    $negative_keywords = sa_get_keywords_array( sa_get_setting( 'negative_keywords', '' ) );
-    $neutral_keywords  = sa_get_keywords_array( sa_get_setting( 'neutral_keywords', '' ) );
+    $positive_keywords = cma_get_keywords_array( cma_get_setting( 'positive_keywords', '' ) );
+    $negative_keywords = cma_get_keywords_array( cma_get_setting( 'negative_keywords', '' ) );
+    $neutral_keywords  = cma_get_keywords_array( cma_get_setting( 'neutral_keywords', '' ) );
 
-    $positive_count = sa_count_keyword_matches( $content, $positive_keywords );
-    $negative_count = sa_count_keyword_matches( $content, $negative_keywords );
-    $neutral_count  = sa_count_keyword_matches( $content, $neutral_keywords );
+    $positive_count = cma_count_keyword_matches( $content, $positive_keywords );
+    $negative_count = cma_count_keyword_matches( $content, $negative_keywords );
+    $neutral_count  = cma_count_keyword_matches( $content, $neutral_keywords );
 
     $sentiment = 'neutral';
 
@@ -83,7 +83,7 @@ function sa_perform_sentiment_analysis( $post ) {
     }
 
     update_post_meta( $post->ID, '_post_sentiment', sanitize_text_field( $sentiment ) );
-    delete_transient( 'sa_posts_' . $sentiment );
+    delete_transient( 'cma_posts_' . $sentiment );
 
     return $sentiment;
 }

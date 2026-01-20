@@ -14,12 +14,12 @@ const BulkAnalyzer = () => {
     setResults(null);
 
     try {
-      const response =await fetch(SENTIMENT_ANALYZER?.apiUrl + "/analyze/bulk",
+      const response =await fetch(CONTENT_MOOD_ANALYZER?.apiUrl + "/analyze/bulk",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-WP-Nonce": SENTIMENT_ANALYZER.nonce,
+            "X-WP-Nonce": CONTENT_MOOD_ANALYZER.nonce,
           },
           // filters if you want later
           // body: JSON.stringify({ status: 'publish', limit: 500 }),

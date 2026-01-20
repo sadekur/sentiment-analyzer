@@ -1,15 +1,15 @@
 <?php
-namespace Sentiment\Models;
+namespace Content_Mood\Models;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Sentiment_Model
- * Handles sentiment data model operations.
+ * Class Content_Mood_Model
+ * Handles content mood data model operations.
  *
- * @package Sentiment\Models
+ * @package Content_Mood\Models
  */
-class Sentiment_Model {
+class Content_Mood_Model {
 
     /**
      * Get posts with filters
@@ -149,8 +149,8 @@ class Sentiment_Model {
     //     // Delete all sentiment-related transients
     //     $wpdb->query(
     //         "DELETE FROM {$wpdb->options} 
-    //         WHERE option_name LIKE '_transient_sa_posts_%' 
-    //         OR option_name LIKE '_transient_timeout_sa_posts_%'"
+    //         WHERE option_name LIKE '_transient_cma_posts_%' 
+    //         OR option_name LIKE '_transient_timeout_cma_posts_%'"
     //     );
     // }
 }

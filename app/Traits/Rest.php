@@ -1,5 +1,5 @@
 <?php
-namespace Sentiment\Traits;
+namespace Content_Mood\Traits;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 trait Rest {
 
 	// Namespace for the REST API routes specific to this plugin.
-	public $namespace = 'sentiment-analyzer/v1';
+	public $namespace = 'content-mood-analyzer/v1';
 
 	/**
 	 * Registers a new REST API route.

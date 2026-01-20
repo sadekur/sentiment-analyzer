@@ -1,5 +1,5 @@
 {
-  "name": "sentiment-analyzer",
+  "name": "content-mood-analyzer",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -45,5 +45,5 @@
     "webpack-cli": "^6.0.1"
   },
   "keywords": [],
-  "description": ""
+  "description": "A WordPress plugin to analyze mood of post content for positive, negative, or neutral."
 }

@@ -1,12 +1,12 @@
 <?php
-namespace Sentiment\API;
+namespace Content_Mood\API;
 
 defined( 'ABSPATH' ) || exit;
 
-use Sentiment\Traits\Rest;
-use Sentiment\Models\Sentiment_Model as Sentiment_Data_Model;
+use Content_Mood\Traits\Rest;
+use Content_Mood\Models\Content_Mood_Model as Content_Mood_Data_Model;
 
-class Sentiment_Data {
+class Content_Mood_Data {
 
 	use Rest;
  	/**
@@ -61,20 +61,20 @@ class Sentiment_Data {
             if ( in_array( 'positive_keywords', $updated_fields ) ||
                 in_array( 'negative_keywords', $updated_fields ) ||
                 in_array( 'neutral_keywords', $updated_fields ) ) {
-                sa_clear_sentiment_cache();
+                cma_clear_sentiment_cache();
             }
 
             return rest_ensure_response( array(
                 'success' => true,
                 'updated' => $updated_fields,
                 'settings' => $current,
-                'message' => __( 'Settings saved successfully.', 'sentiment-analyzer' ),
+                'message' => __( 'Settings saved successfully.', 'content-mood-analyzer' ),
             ) );
         }
 
         return new \WP_Error(
             'save_failed',
-            __( 'Failed to save settings.', 'sentiment-analyzer' ),
+            __( 'Failed to save settings.', 'content-mood-analyzer' ),
             array( 'status' => 500 )
         );
     }
@@ -86,7 +86,7 @@ class Sentiment_Data {
         if ( ! $post ) {
             return new \WP_Error(
                 'post_not_found',
-                __( 'Post not found.', 'sentiment-analyzer' ),
+                __( 'Post not found.', 'content-mood-analyzer' ),
                 array( 'status' => 404 )
             );
         }
@@ -94,19 +94,19 @@ class Sentiment_Data {
         if ( $post->post_type !== 'post' ) {
             return new \WP_Error(
                 'invalid_post_type',
-                __( 'Only posts can be analyzed.', 'sentiment-analyzer' ),
+                __( 'Only posts can be analyzed.', 'content-mood-analyzer' ),
                 array( 'status' => 400 )
             );
         }
 
         // Analyze sentiment
-        $sentiment = sa_perform_sentiment_analysis( $post );
+        $sentiment = cma_perform_sentiment_analysis( $post );
 
         return rest_ensure_response( array(
             'success' => true,
             'post_id' => $post_id,
             'sentiment' => $sentiment,
-            'message' => __( 'Post analyzed successfully.', 'sentiment-analyzer' ),
+            'message' => __( 'Post analyzed successfully.', 'content-mood-analyzer' ),
         ) );
     }
 
@@ -129,7 +129,7 @@ class Sentiment_Data {
         foreach ( $post_ids as $post_id ) {
             $post = get_post( $post_id );
             if ( $post ) {
-                $sentiment = sa_perform_sentiment_analysis( $post );
+                $sentiment = cma_perform_sentiment_analysis( $post );
                 $results[] = array(
                     'post_id' => $post_id,
                     'sentiment' => $sentiment,
@@ -139,7 +139,7 @@ class Sentiment_Data {
         }
 
         // Clear all caches
-        sa_clear_sentiment_cache();
+        cma_clear_sentiment_cache();
 
         return rest_ensure_response( array(
             'success' => true,
@@ -147,7 +147,7 @@ class Sentiment_Data {
             'total' => count( $post_ids ),
             'results' => $results,
             'message' => sprintf(
-                __( 'Analyzed %d posts successfully.', 'sentiment-analyzer' ),
+                __( 'Analyzed %d posts successfully.', 'content-mood-analyzer' ),
                 $analyzed
             ),
         ));
@@ -157,11 +157,11 @@ class Sentiment_Data {
      * Clear all sentiment caches
      */
     public function clear_cache( $request ) {
-        sa_clear_sentiment_cache();
+        cma_clear_sentiment_cache();
 
         return rest_ensure_response( array(
             'success' => true,
-            'message' => __( 'Cache cleared successfully.', 'sentiment-analyzer' ),
+            'message' => __( 'Cache cleared successfully.', 'content-mood-analyzer' ),
         ) );
     }
 
@@ -191,18 +191,18 @@ class Sentiment_Data {
         }
 
         // Get posts using the model method
-        $result = Sentiment_Data_Model::list( $filters, $per_page, ( $page - 1 ) * $per_page, $sort );
+        $result = Content_Mood_Data_Model::list( $filters, $per_page, ( $page - 1 ) * $per_page, $sort );
 
         if ( empty( $result['posts'] ) ) {
             return rest_ensure_response( array(
                 'success'          => true,
-                'message'          => __( 'No posts found.', 'sentiment-analyzer' ),
+                'message'          => __( 'No posts found.', 'content-mood-analyzer' ),
                 'posts'            => array(),
                 'total'            => 0,
                 'page'             => $page,
                 'per_page'         => $per_page,
                 'total_pages'      => 0,
-                'sentiment_counts' => Sentiment_Data_Model::get_sentiment_counts(),
+                'sentiment_counts' => Content_Mood_Data_Model::get_sentiment_counts(),
             ) );
         }
 
@@ -224,7 +224,7 @@ class Sentiment_Data {
         $total_pages = ceil( $result['total'] / $per_page );
 
         // Get sentiment counts for all types
-        $sentiment_counts = Sentiment_Data_Model::get_sentiment_counts();
+        $sentiment_counts = Content_Mood_Data_Model::get_sentiment_counts();
 
         /**
          * Filters the posts list.
@@ -262,7 +262,7 @@ class Sentiment_Data {
         if ( ! $post || $post->post_status !== 'publish' ) {
             return rest_ensure_response( array(
                 'success' => false,
-                'message' => __( 'Post not found.', 'sentiment-analyzer' ),
+                'message' => __( 'Post not found.', 'content-mood-analyzer' ),
             ), 404 );
         }
 

@@ -1,6 +1,6 @@
 {
-  "name": "sentiment/analyzer",
-  "description": "A plugin for Sentiment Analyzer",
+  "name": "content-mood/analyzer",
+  "description": "A plugin for Content Mood Analyzer",
   "type": "wordpress-plugin",
   "license": "GPLv2",
   "authors": [
@@ -12,7 +12,7 @@
   "require": {},
   "autoload": {
     "psr-4": {
-      "Sentiment\\": "app/"
+      "Content_Mood\\": "app/"
     },
     "files": [
       "app/Helpers/functions.php"

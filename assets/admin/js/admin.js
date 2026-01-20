@@ -29,27 +29,27 @@
             
             // Make API call
             $.ajax({
-                url: SENTIMENT_ANALYZER.apiUrl + '/settings',
+                url: CONTENT_MOOD_ANALYZER.apiUrl + '/settings',
                 method: 'POST',
                 data: JSON.stringify(formData),
                 contentType: 'application/json',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', SENTIMENT_ANALYZER.nonce);
+                    xhr.setRequestHeader('X-WP-Nonce', CONTENT_MOOD_ANALYZER.nonce);
                 },
                 success: function(response) {
                     if (response.success) {
-                        showMessage('success', SENTIMENT_ANALYZER.strings.saveSuccess);
-                        
+                        showMessage('success', CONTENT_MOOD_ANALYZER.strings.saveSuccess);
+
                         // Scroll to message
                         $('html, body').animate({
                             scrollTop: messagesContainer.offset().top - 50
                         }, 500);
                     } else {
-                        showMessage('error', SENTIMENT_ANALYZER.strings.saveError);
+                        showMessage('error', CONTENT_MOOD_ANALYZER.strings.saveError);
                     }
                 },
                 error: function(xhr) {
-                    let errorMessage = SENTIMENT_ANALYZER.strings.saveError;
+                    let errorMessage = CONTENT_MOOD_ANALYZER.strings.saveError;
                     
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
@@ -77,17 +77,17 @@
             const statusDiv = $('#bulk-update-status');
             
             // Confirm action
-            if (!confirm(SENTIMENT_ANALYZER.strings.confirmBulk)) {
+            if (!confirm(CONTENT_MOOD_ANALYZER.strings.confirmBulk)) {
                 return;
             }
-            
+
             // Disable button and show progress
             button.prop('disabled', true);
-            button.html('<span class="dashicons dashicons-update spin"></span> ' + SENTIMENT_ANALYZER.strings.bulkUpdating);
+            button.html('<span class="dashicons dashicons-update spin"></span> ' + CONTENT_MOOD_ANALYZER.strings.bulkUpdating);
             progressContainer.show();
             statusDiv.html('');
             progressBar.css('width', '0%');
-            progressText.text(SENTIMENT_ANALYZER.strings.bulkUpdating);
+            progressText.text(CONTENT_MOOD_ANALYZER.strings.bulkUpdating);
             
             // Animate progress bar
             let progress = 0;
@@ -100,17 +100,17 @@
             
             // Make API call
             $.ajax({
-                url: SENTIMENT_ANALYZER.apiUrl + '/analyze/bulk',
+                url: CONTENT_MOOD_ANALYZER.apiUrl + '/analyze/bulk',
                 method: 'POST',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', SENTIMENT_ANALYZER.nonce);
+                    xhr.setRequestHeader('X-WP-Nonce', CONTENT_MOOD_ANALYZER.nonce);
                 },
                 success: function(response) {
                     clearInterval(progressInterval);
                     progressBar.css('width', '100%');
-                    
+
                     if (response.success) {
-                        const message = SENTIMENT_ANALYZER.strings.bulkSuccess.replace('{count}', response.analyzed);
+                        const message = CONTENT_MOOD_ANALYZER.strings.bulkSuccess.replace('{count}', response.analyzed);
                         progressText.html('<span class="dashicons dashicons-yes-alt"></span> ' + message);
                         
                         statusDiv.html(
@@ -125,13 +125,13 @@
                             progressContainer.fadeOut();
                         }, 3000);
                     } else {
-                        showErrorInline(statusDiv, SENTIMENT_ANALYZER.strings.bulkError);
+                        showErrorInline(statusDiv, CONTENT_MOOD_ANALYZER.strings.bulkError);
                         progressContainer.hide();
                     }
                 },
                 error: function(xhr) {
                     clearInterval(progressInterval);
-                    let errorMessage = SENTIMENT_ANALYZER.strings.bulkError;
+                    let errorMessage = CONTENT_MOOD_ANALYZER.strings.bulkError;
                     
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
@@ -159,24 +159,24 @@
             
             // Disable button
             button.prop('disabled', true);
-            button.html('<span class="dashicons dashicons-update spin"></span> ' + SENTIMENT_ANALYZER.strings.cacheClearing);
+            button.html('<span class="dashicons dashicons-update spin"></span> ' + CONTENT_MOOD_ANALYZER.strings.cacheClearing);
             statusDiv.html('');
-            
+
             // Make API call
             $.ajax({
-                url: SENTIMENT_ANALYZER.apiUrl + '/cache/clear',
+                url: CONTENT_MOOD_ANALYZER.apiUrl + '/cache/clear',
                 method: 'POST',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', SENTIMENT_ANALYZER.nonce);
+                    xhr.setRequestHeader('X-WP-Nonce', CONTENT_MOOD_ANALYZER.nonce);
                 },
                 success: function(response) {
                     if (response.success) {
                         statusDiv.html(
                             '<div class="notice notice-success inline sa-notice">' +
-                            '<p><span class="dashicons dashicons-yes-alt"></span> ' + SENTIMENT_ANALYZER.strings.cacheSuccess + '</p>' +
+                            '<p><span class="dashicons dashicons-yes-alt"></span> ' + CONTENT_MOOD_ANALYZER.strings.cacheSuccess + '</p>' +
                             '</div>'
                         );
-                        
+
                         // Hide success message after 3 seconds
                         setTimeout(function() {
                             statusDiv.fadeOut(function() {
@@ -184,11 +184,11 @@
                             });
                         }, 3000);
                     } else {
-                        showErrorInline(statusDiv, SENTIMENT_ANALYZER.strings.cacheError);
+                        showErrorInline(statusDiv, CONTENT_MOOD_ANALYZER.strings.cacheError);
                     }
                 },
                 error: function(xhr) {
-                    let errorMessage = SENTIMENT_ANALYZER.strings.cacheError;
+                    let errorMessage = CONTENT_MOOD_ANALYZER.strings.cacheError;
                     
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;

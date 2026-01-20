@@ -1,5 +1,5 @@
 <?php
-namespace Sentiment\Controllers\Common;
+namespace Content_Mood\Controllers\Common;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,20 +25,20 @@ class Assets {
 			'rest_base'       => esc_url_raw( get_rest_url() ),
 			'nonce'           => wp_create_nonce( 'wp_rest' ),
 			'logout_url'      => wp_logout_url(),
-			'apiUrl' 		  => rest_url('sentiment-analyzer/v1'),
+			'apiUrl' 		  => rest_url('content-mood-analyzer/v1'),
 			'ajax_url'        => admin_url( 'admin-ajax.php' ),
-			'assets'          => SENTIMENT_ANALYZER_URL . 'assets/',
-			'plugin_url'      => SENTIMENT_ANALYZER_URL,
+			'assets'          => CONTENT_MOOD_ANALYZER_ASSETS,
+			'plugin_url'      => CONTENT_MOOD_ANALYZER_URL,
 			'strings' 		  => array(
-				'bulkUpdating' 	=> __('Analyzing posts...', 'sentiment-analyzer'),
-				'bulkSuccess' 	=> __('Successfully analyzed {count} posts!', 'sentiment-analyzer'),
-				'bulkError' 	=> __('Error analyzing posts. Please try again.', 'sentiment-analyzer'),
-				'cacheClearing' => __('Clearing cache...', 'sentiment-analyzer'),
-				'cacheSuccess' 	=> __('Cache cleared successfully!', 'sentiment-analyzer'),
-				'cacheError' 	=> __('Error clearing cache. Please try again.', 'sentiment-analyzer'),
-				'confirm' 		=> __('This will re-analyze all posts. Continue?', 'sentiment-analyzer'),
-				'saveSuccess' 	=> __('Settings saved successfully!', 'sentiment-analyzer'),
-        		'saveError'   	=> __('Failed to save settings.', 'sentiment-analyzer'),
+				'bulkUpdating' 	=> __('Analyzing posts...', 'content-mood-analyzer'),
+				'bulkSuccess' 	=> __('Successfully analyzed {count} posts!', 'content-mood-analyzer'),
+				'bulkError' 	=> __('Error analyzing posts. Please try again.', 'content-mood-analyzer'),
+				'cacheClearing' => __('Clearing cache...', 'content-mood-analyzer'),
+				'cacheSuccess' 	=> __('Cache cleared successfully!', 'content-mood-analyzer'),
+				'cacheError' 	=> __('Error clearing cache. Please try again.', 'content-mood-analyzer'),
+				'confirm' 		=> __('This will re-analyze all posts. Continue?', 'content-mood-analyzer'),
+				'saveSuccess' 	=> __('Settings saved successfully!', 'content-mood-analyzer'),
+        		'saveError'   	=> __('Failed to save settings.', 'content-mood-analyzer'),
 			),
 		);
 
@@ -51,36 +51,36 @@ class Assets {
 			$load_common_assets = true;
 
 			// Enqueue admin-specific CSS (if exists, otherwise skip)
-			if ( file_exists(SENTIMENT_ANALYZER_PATH . 'assets/admin/css/settings.css' ) ) {
+			if ( file_exists(CONTENT_MOOD_ANALYZER_PATH . 'assets/admin/css/settings.css' ) ) {
 				wp_enqueue_style(
-					'sentiment-analyzer-settings',
-					SENTIMENT_ANALYZER_ASSETS . '/admin/css/settings.css',
+					'content-mood-analyzer-settings',
+					CONTENT_MOOD_ANALYZER_ASSETS . '/admin/css/settings.css',
 					array(),
-					SENTIMENT_ANALYZER_VERSION
+					CONTENT_MOOD_ANALYZER_VERSION
 				);
 			}
 
 			// Enqueue admin React CSS bundle
 			wp_enqueue_style(
-				'sentiment-analyzer-admin-react',
-				SENTIMENT_ANALYZER_URL . 'build/admin.bundle.css',
+				'content-mood-analyzer-admin-react',
+				CONTENT_MOOD_ANALYZER_URL . 'build/admin.bundle.css',
 				array(),
-				SENTIMENT_ANALYZER_VERSION
+				CONTENT_MOOD_ANALYZER_VERSION
 			);
 
 			wp_enqueue_script( 
-				'sentiment-analyzer-admin-react',
-				SENTIMENT_ANALYZER_URL . 'build/admin.bundle.js',
+				'content-mood-analyzer-admin-react',
+				CONTENT_MOOD_ANALYZER_URL . 'build/admin.bundle.js',
 				array('wp-element', 'wp-components'),
-				SENTIMENT_ANALYZER_VERSION,
+				CONTENT_MOOD_ANALYZER_VERSION,
 				true
 			);
 
 			wp_enqueue_script(
-				'sentiment-analyzer-admin',
-				SENTIMENT_ANALYZER_ASSETS . '/admin/js/admin.js',
+				'content-mood-analyzer-admin',
+				CONTENT_MOOD_ANALYZER_ASSETS . '/admin/js/admin.js',
 				array( 'jquery' ),
-				SENTIMENT_ANALYZER_VERSION,
+				CONTENT_MOOD_ANALYZER_VERSION,
 				true
 			);
 		}
@@ -94,35 +94,35 @@ class Assets {
 			$load_common_assets = true;
 			
 			// Enqueue public-specific CSS (if exists, otherwise skip)
-			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/public/css/public.css')) {
+			if (file_exists(CONTENT_MOOD_ANALYZER_PATH . 'assets/public/css/public.css')) {
 				wp_enqueue_style(
-					'sentiment-analyzer-public',
-					SENTIMENT_ANALYZER_ASSETS . '/public/css/public.css',
+					'content-mood-analyzer-public',
+					CONTENT_MOOD_ANALYZER_ASSETS . '/public/css/public.css',
 					array(),
-					SENTIMENT_ANALYZER_VERSION
+					CONTENT_MOOD_ANALYZER_VERSION
 				);
 			}
 
 			// Enqueue public React CSS bundle
 			wp_enqueue_style(
-				'sentiment-analyzer-public-react',
-				SENTIMENT_ANALYZER_URL . 'build/public.bundle.css',
+				'content-mood-analyzer-public-react',
+				CONTENT_MOOD_ANALYZER_URL . 'build/public.bundle.css',
 				array(),
-				SENTIMENT_ANALYZER_VERSION
+				CONTENT_MOOD_ANALYZER_VERSION
 			);
 
 			wp_enqueue_script( 
-				'sentiment-analyzer-public-react',
-				SENTIMENT_ANALYZER_URL . 'build/public.bundle.js',
+				'content-mood-analyzer-public-react',
+				CONTENT_MOOD_ANALYZER_URL . 'build/public.bundle.js',
 				array('wp-element', 'wp-components'),
-				SENTIMENT_ANALYZER_VERSION, true
+				CONTENT_MOOD_ANALYZER_VERSION, true
 			);
 
 			wp_enqueue_script(
-				'sentiment-analyzer-public',
-				SENTIMENT_ANALYZER_ASSETS . '/js/public.js',
+				'content-mood-analyzer-public',
+				CONTENT_MOOD_ANALYZER_ASSETS . '/public/js/init.js',
 				array( 'jquery' ),
-				SENTIMENT_ANALYZER_VERSION,
+				CONTENT_MOOD_ANALYZER_VERSION,
 				true
 			);
 		}
@@ -135,35 +135,35 @@ class Assets {
 		if ( $load_common_assets ) {
 
 			// Enqueue common CSS (if exists, otherwise skip)
-			if (file_exists(SENTIMENT_ANALYZER_PATH . 'assets/common/css/common.css')) {
+			if (file_exists(CONTENT_MOOD_ANALYZER_PATH . 'assets/common/css/common.css')) {
 				wp_enqueue_style(
-					'sentiment-analyzer-common',
-					SENTIMENT_ANALYZER_ASSETS . '/common/css/common.css',
+					'content-mood-analyzer-common',
+					CONTENT_MOOD_ANALYZER_ASSETS . '/common/css/common.css',
 					array(),
-					SENTIMENT_ANALYZER_VERSION
+					CONTENT_MOOD_ANALYZER_VERSION
 				);
 			}
 
 			// Enqueue the built Tailwind CSS
 			wp_enqueue_style(
-				'sentiment-analyzer-tailwind',
-				SENTIMENT_ANALYZER_URL . 'build/tailwind.build.bundle.css',
+				'content-mood-analyzer-tailwind',
+				CONTENT_MOOD_ANALYZER_URL . 'build/tailwind.build.bundle.css',
 				array(),
-				SENTIMENT_ANALYZER_VERSION
+				CONTENT_MOOD_ANALYZER_VERSION
 			);
 
 			wp_enqueue_script(
-				'sentiment-analyzer-common',
-				SENTIMENT_ANALYZER_ASSETS . '/common/js/common.js',
+				'content-mood-analyzer-common',
+				CONTENT_MOOD_ANALYZER_ASSETS . '/common/js/common.js',
 				array( 'jquery' ),
-				SENTIMENT_ANALYZER_VERSION,
+				CONTENT_MOOD_ANALYZER_VERSION,
 				true
 			);
 
 			wp_localize_script(
-				'sentiment-analyzer-common',
-				'SENTIMENT_ANALYZER',
-				apply_filters( 'sentiment-analyzer-localized_vars', $localized )
+				'content-mood-analyzer-common',
+				'CONTENT_MOOD_ANALYZER',
+				apply_filters( 'content-mood-analyzer-localized_vars', $localized )
 			);
 		}
 	}

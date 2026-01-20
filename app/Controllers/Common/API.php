@@ -1,8 +1,8 @@
 <?php
-namespace Sentiment\Controllers\Common;
+namespace Content_Mood\Controllers\Common;
 use WP_REST_Server;
-use Sentiment\API\Sentiment_Data;
-use Sentiment\Traits\Rest;
+use Content_Mood\API\Content_Mood_Data;
+use Content_Mood\Traits\Rest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ class API {
     /**
      * Namespace for the API
      */
-    // private $namespace = 'sentiment-analyzer/v1';
+    // private $namespace = 'content-mood-analyzer/v1';
 
     /**
      * Constructor to register routes
@@ -32,7 +32,7 @@ class API {
             '/settings',
             array(
                 'methods' => 'POST',
-                'callback' => array( new Sentiment_Data(), 'update_settings' ),
+                'callback' => array( new Content_Mood_Data(), 'update_settings' ),
                 'permission_callback' => array( $this, 'check_permission' ),
                 'args' => array(
                     'positive_keywords' => array(
@@ -57,14 +57,14 @@ class API {
         // Get settings
 		register_rest_route( $this->namespace, '/settings', array(
             'methods' => 'GET',
-            'callback' => array( new Sentiment_Data(), 'get_settings' ),
+            'callback' => array( new Content_Mood_Data(), 'get_settings' ),
             'permission_callback' => array( $this, 'check_permission' ),
         ));
 
         // Analyze single post
         register_rest_route( $this->namespace, '/analyze/(?P<id>\d+)', array(
             'methods' => 'POST',
-            'callback'   => array( new Sentiment_Data(), 'analyze_post' ),
+            'callback'   => array( new Content_Mood_Data(), 'analyze_post' ),
             'permission_callback' => array( $this, 'check_permission' ),
             'args' => array(
                 'id' => array(
@@ -78,14 +78,14 @@ class API {
         // Bulk analyze all posts
         register_rest_route($this->namespace, '/analyze/bulk', array(
             'methods' => 'POST',
-			'callback'   => array( new Sentiment_Data(), 'bulk_analyze' ),
+			'callback'   => array( new Content_Mood_Data(), 'bulk_analyze' ),
             'permission_callback' => array($this, 'check_permission'),
         ));
 
         // Get post sentiment
         register_rest_route( $this->namespace, '/sentiment/(?P<id>\d+)', array(
             'methods' => 'GET',
-			'callback' => array( new Sentiment_Data(), 'get_sentiment' ),
+			'callback' => array( new Content_Mood_Data(), 'get_sentiment' ),
             'permission_callback' => '__return_true',
             'args' => array(
                 'id' => array(
@@ -101,7 +101,7 @@ class API {
             $this->namespace,
             '/cache/clear', array(
             'methods' => 'POST',
-			'callback'   => array( new Sentiment_Data(), 'clear_cache' ),
+			'callback'   => array( new Content_Mood_Data(), 'clear_cache' ),
             'permission_callback' => array( $this, 'check_permission' ),
         ));
 
@@ -110,10 +110,10 @@ class API {
             '/posts',
             array(
                 'methods'    => WP_REST_Server::READABLE,
-                'callback'   => array( new Sentiment_Data(), 'list' ),
+                'callback'   => array( new Content_Mood_Data(), 'list' ),
                 'args'       => array(
                     'sentiment' => array(
-                        'description'       => __( 'Filter by sentiment type', 'sentiment-analyzer' ),
+                        'description'       => __( 'Filter by sentiment type', 'content-mood-analyzer' ),
                         'required'          => false,
                         'type'              => 'string',
                         'enum'              => array( 'positive', 'negative', 'neutral' ),
@@ -125,31 +125,31 @@ class API {
                         }
                     ),
                     'page' => array(
-                        'description' => __( 'Page number for pagination', 'sentiment-analyzer' ),
+                        'description' => __( 'Page number for pagination', 'content-mood-analyzer' ),
                         'required'    => false,
                         'type'        => 'integer',
                         'default'     => 1,
                     ),
                     'per_page' => array(
-                        'description' => __( 'Number of posts per page', 'sentiment-analyzer' ),
+                        'description' => __( 'Number of posts per page', 'content-mood-analyzer' ),
                         'required'    => false,
                         'type'        => 'integer',
                         'default'     => 10,
                     ),
                     'sort' => array(
-                        'description' => __( 'Sort order', 'sentiment-analyzer' ),
+                        'description' => __( 'Sort order', 'content-mood-analyzer' ),
                         'required'    => false,
                         'type'        => 'string',
                         'default'     => 'desc',
                         'enum'        => array( 'asc', 'desc' ),
                     ),
                     'from_date' => array(
-                        'description' => __( 'Filter by from date', 'sentiment-analyzer' ),
+                        'description' => __( 'Filter by from date', 'content-mood-analyzer' ),
                         'required'    => false,
                         'type'        => 'string',
                     ),
                     'to_date' => array(
-                        'description' => __( 'Filter by to date', 'sentiment-analyzer' ),
+                        'description' => __( 'Filter by to date', 'content-mood-analyzer' ),
                         'required'    => false,
                         'type'        => 'string',
                     ),
@@ -163,10 +163,10 @@ class API {
             '/posts/(?P<id>\d+)',
             array(
                 'methods'    => WP_REST_Server::READABLE,
-                'callback'   => array( new Sentiment_Data(), 'get' ),
+                'callback'   => array( new Content_Mood_Data(), 'get' ),
                 'args'       => array(
                     'id' => array(
-                        'description' => __( 'The post ID', 'sentiment-analyzer' ),
+                        'description' => __( 'The post ID', 'content-mood-analyzer' ),
                         'required'    => true,
                         'type'        => 'integer',
                     ),

@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Sentiment\\' => array($baseDir . '/app'),
+    'Content_Mood\\' => array($baseDir . '/app'),
 );

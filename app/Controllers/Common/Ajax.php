@@ -1,7 +1,7 @@
 <?php
-namespace Sentiment\Controllers\Common;
+namespace Content_Mood\Controllers\Common;
 
-use Sentiment\Controllers\Front\Front;
+use Content_Mood\Controllers\Front\Front;
 
 defined('ABSPATH') || exit;
 
@@ -15,7 +15,7 @@ class Ajax {
         check_ajax_referer('bulk_update_sentiment_action', 'nonce');
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(__('Permission denied', 'sentiment-analyzer'));
+            wp_send_json_error(__('Permission denied', 'content-mood-analyzer'));
         }
 
         $collect_frontend = new Front();
@@ -30,6 +30,6 @@ class Ajax {
             $collect_frontend->analyze_post_sentiment($post->ID, $post, true);
         }
 
-        wp_send_json_success(__('Bulk update completed', 'sentiment-analyzer'));
+        wp_send_json_success(__('Bulk update completed', 'content-mood-analyzer'));
     }
 }

@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'sentiment/analyzer',
+        'name' => 'content-mood/analyzer',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '787f8b80b5a7be364d84333f67740c36a138cd2d',
+        'reference' => '5b5e4a6337aa265aa7cbbc5cbd121eb0cd348de2',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'sentiment/analyzer' => array(
+        'content-mood/analyzer' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '787f8b80b5a7be364d84333f67740c36a138cd2d',
+            'reference' => '5b5e4a6337aa265aa7cbbc5cbd121eb0cd348de2',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

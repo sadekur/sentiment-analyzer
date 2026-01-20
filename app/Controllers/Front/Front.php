@@ -1,6 +1,6 @@
 <?php
-namespace Sentiment\Controllers\Front;
-use Sentiment\Traits\Hook;
+namespace Content_Mood\Controllers\Front;
+use Content_Mood\Traits\Hook;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -51,14 +51,14 @@ class Front {
         $settings = wp_parse_args( $settings, $defaults );
 
         // Get keyword lists from settings
-        $positive_keywords = sa_get_keywords_array( $settings['positive_keywords'] );
-        $negative_keywords = sa_get_keywords_array( $settings['negative_keywords'] );
-        $neutral_keywords  = sa_get_keywords_array( $settings['neutral_keywords'] );
+        $positive_keywords = cma_get_keywords_array( $settings['positive_keywords'] );
+        $negative_keywords = cma_get_keywords_array( $settings['negative_keywords'] );
+        $neutral_keywords  = cma_get_keywords_array( $settings['neutral_keywords'] );
 
         // Count keyword matches
-        $positive_count = sa_count_keyword_matches( $content, $positive_keywords );
-        $negative_count = sa_count_keyword_matches( $content, $negative_keywords );
-        $neutral_count  = sa_count_keyword_matches( $content, $neutral_keywords );
+        $positive_count = cma_count_keyword_matches( $content, $positive_keywords );
+        $negative_count = cma_count_keyword_matches( $content, $negative_keywords );
+        $neutral_count  = cma_count_keyword_matches( $content, $neutral_keywords );
 
         $sentiment = 'neutral'; // Default
         
@@ -85,7 +85,7 @@ class Front {
         update_post_meta($post->ID, '_post_sentiment_analyzed_at', current_time('mysql'));
 
         // Clear relevant caches
-        delete_transient('sa_posts_' . $sentiment);
+        delete_transient('cma_posts_' . $sentiment);
 
         return $sentiment;
     }
@@ -110,7 +110,7 @@ class Front {
         if ($position === 'none') {
             return $content;
         }
-        $badge = sa_get_sentiment_badge_html($sentiment);
+        $badge = cma_get_sentiment_badge_html($sentiment);
         if ($position === 'top') {
             return $badge . $content;
         } else {

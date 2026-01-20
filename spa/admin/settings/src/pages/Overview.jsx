@@ -20,8 +20,8 @@ const Overview = () => {
         setLoading(true);
         try {
             // Build URL with parameters
-            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${perPage}`;
-            
+            let url = `${CONTENT_MOOD_ANALYZER?.apiUrl}/posts?page=${page}&per_page=${perPage}`;
+
             // Add sentiment filter only if not "all"
             if (sentiment !== 'all') {
                 url += `&sentiment=${sentiment}`;
@@ -29,7 +29,7 @@ const Overview = () => {
 
             const response = await fetch(url, {
                 headers: {
-                    "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
+                    "X-WP-Nonce": CONTENT_MOOD_ANALYZER?.nonce,
                 },
             });
             

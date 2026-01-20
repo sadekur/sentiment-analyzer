@@ -1,5 +1,5 @@
 <?php
-namespace Sentiment\Traits;
+namespace Content_Mood\Traits;
 
 defined( 'ABSPATH' ) || exit;
 

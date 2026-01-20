@@ -1,5 +1,5 @@
 <?php
-namespace Sentiment\Controllers\Front;
+namespace Content_Mood\Controllers\Front;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,7 +33,7 @@ class Shortcode {
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         
         // Check cache
-        $cache_key = 'sa_posts_' . $sentiment . '_page_' . $paged . '_per_' . $posts_per_page;
+        $cache_key = 'cma_posts_' . $sentiment . '_page_' . $paged . '_per_' . $posts_per_page;
         $cached_output = get_transient($cache_key);
         
         if ($cached_output !== false) {
@@ -69,7 +69,7 @@ class Shortcode {
                     <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                     <div class="sentiment-post-meta">
                         <span class="post-date"><?php echo get_the_date(); ?></span>
-                        <?php echo sa_get_sentiment_badge_html($sentiment); ?>
+                        <?php echo cma_get_sentiment_badge_html($sentiment); ?>
                     </div>
                     <div class="sentiment-post-excerpt">
                         <?php the_excerpt(); ?>
@@ -84,15 +84,15 @@ class Shortcode {
                 echo paginate_links(array(
                     'total' => $query->max_num_pages,
                     'current' => $paged,
-                    'prev_text' => __('&laquo; Previous', 'sentiment-analyzer'),
-                    'next_text' => __('Next &raquo;', 'sentiment-analyzer')
+                    'prev_text' => __('&laquo; Previous', 'content-mood-analyzer'),
+                    'next_text' => __('Next &raquo;', 'content-mood-analyzer')
                 ));
                 echo '</div>';
             }
             
             echo '</div>';
         } else {
-            echo '<p>' . sprintf(__('No %s posts found.', 'sentiment-analyzer'), $sentiment) . '</p>';
+            echo '<p>' . sprintf(__('No %s posts found.', 'content-mood-analyzer'), $sentiment) . '</p>';
         }
         
         wp_reset_postdata();

@@ -19,9 +19,9 @@ const Sentiments = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch(SENTIMENT_ANALYZER?.apiUrl + "/settings", {
+      const response = await fetch(CONTENT_MOOD_ANALYZER?.apiUrl + "/settings", {
         headers: {
-          "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
+          "X-WP-Nonce": CONTENT_MOOD_ANALYZER?.nonce,
         },
       });
       const result = await response.json();
@@ -47,11 +47,11 @@ const Sentiments = () => {
     setMessage({ type: "", text: "" });
 
     try {
-      const response = await fetch(SENTIMENT_ANALYZER?.apiUrl + "/settings", {
+      const response = await fetch(CONTENT_MOOD_ANALYZER?.apiUrl + "/settings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
+          "X-WP-Nonce": CONTENT_MOOD_ANALYZER?.nonce,
         },
         body: JSON.stringify(settings),
       });

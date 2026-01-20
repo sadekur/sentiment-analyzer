@@ -19,7 +19,7 @@ const Dashboard = ({ page }) => {
     const fetchPosts = async (sentiment, currentPage) => {
         setLoading(true);
         try {
-            let url = `${SENTIMENT_ANALYZER?.apiUrl}/posts?page=${currentPage}&per_page=${postPerPage}`;
+            let url = `${CONTENT_MOOD_ANALYZER?.apiUrl}/posts?page=${currentPage}&per_page=${postPerPage}`;
 
             if (sentiment !== 'all') {
                 url += `&sentiment=${sentiment}`;
@@ -27,7 +27,7 @@ const Dashboard = ({ page }) => {
 
             const response = await fetch(url, {
                 headers: {
-                    "X-WP-Nonce": SENTIMENT_ANALYZER?.nonce,
+                    "X-WP-Nonce": CONTENT_MOOD_ANALYZER?.nonce,
                 },
             });
             

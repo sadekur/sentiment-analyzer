@@ -1,5 +1,5 @@
 <?php
-namespace EasyCommerce\Abstracts;
+namespace Content_Mood_Analyzer\Abstracts;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -56,6 +56,6 @@ abstract class Payment_Method {
 		 *
 		 * @param array $methods List of registered payment methods.
 		 */
-		add_filter( 'easycommerce_payment_methods', array( $this, 'add_payment_method' ) );
+		add_filter( 'content_mood_analyzer_payment_methods', array( $this, 'add_payment_method' ) );
 	}
 }

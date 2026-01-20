@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:       Sentiment Analyzer
+ * Plugin Name:       Content Mood Analyzer
  * Plugin URI:        https://sadekurrahman.net
- * Description:       A plugin Sentiment Analyzer for WordPress.
+ * Description:       A WordPress plugin to analyze mood of post content for positive, negative, or neutral.
  * Version:           1.0.0
  * Requires at least: 6.1
  * Requires PHP:      7.4
@@ -10,7 +10,7 @@
  * Author URI:        https://sadekurrahman.net
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       sentiment-analyzer
+ * Text Domain:       content-mood-analyzer
  * Domain Path:       /languages
  *
  */
@@ -24,7 +24,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * The main plugin class
  */
-final class Sentiment_Analyzer{
+final class Content_Mood_Analyzer{
 
 	/**
 	 * Plugin version
@@ -58,11 +58,11 @@ final class Sentiment_Analyzer{
 	 * @return void
 	 */
 	public function define_constants() {
-		define( 'SENTIMENT_ANALYZER_VERSION', self::version );
-		define( 'SENTIMENT_ANALYZER_FILE', __FILE__ );
-		define( 'SENTIMENT_ANALYZER_PATH', plugin_dir_path(__FILE__) );
-		define( 'SENTIMENT_ANALYZER_URL', plugin_dir_url(__FILE__) );
-		define( 'SENTIMENT_ANALYZER_ASSETS', SENTIMENT_ANALYZER_URL . 'assets/' );
+		define( 'CONTENT_MOOD_ANALYZER_VERSION', self::version );
+		define( 'CONTENT_MOOD_ANALYZER_FILE', __FILE__ );
+		define( 'CONTENT_MOOD_ANALYZER_PATH', plugin_dir_path(__FILE__) );
+		define( 'CONTENT_MOOD_ANALYZER_URL', plugin_dir_url(__FILE__) );
+		define( 'CONTENT_MOOD_ANALYZER_ASSETS', CONTENT_MOOD_ANALYZER_URL . 'assets/' );
 	}
 
 	/**
@@ -72,25 +72,25 @@ final class Sentiment_Analyzer{
 	 */
 	public function init_plugin() {
 
-		new Sentiment\Controllers\Common\Assets();
-		new Sentiment\Controllers\Common\Activation();
-		new Sentiment\Controllers\Common\API();
+		new Content_Mood\Controllers\Common\Assets();
+		new Content_Mood\Controllers\Common\Activation();
+		new Content_Mood\Controllers\Common\API();
 
 		// if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-		// 	 new Sentiment\Controllers\Common\Ajax();
+		// 	 new Content_Mood\Controllers\Common\Ajax();
 		// }
 
 		if ( is_admin() ) {
-			new Sentiment\Controllers\Admin\Menu();
+			new Content_Mood\Controllers\Admin\Menu();
 		} else {
-			new Sentiment\Controllers\Front\Shortcode();
-		    new Sentiment\Controllers\Front\Front();
+			new Content_Mood\Controllers\Front\Shortcode();
+		    new Content_Mood\Controllers\Front\Front();
 		}
 
 	}
 }
-function sentiment_analyzer() {
-	return Sentiment_Analyzer::init();
+function content_mood_analyzer() {
+	return Content_Mood_Analyzer::init();
 }
 
-sentiment_analyzer();
+content_mood_analyzer();
