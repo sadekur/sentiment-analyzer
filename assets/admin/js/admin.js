@@ -276,15 +276,15 @@
         $('head').append(style);
     });
 
-    // $('#adminmenu a[href*="sentiment-analyzer#"]').on('click', function(e) {
-    //     e.preventDefault();
+    $('#adminmenu a[href*="sentiment-analyzer#"]').on('click', function(e) {
+        e.preventDefault();
         
-    //     var href = $(this).attr('href');
-    //     var hashPart = href.split('#')[1];
-    //     window.location.hash = '#' + hashPart;
-    //     $('#adminmenu .wp-submenu li').removeClass('current');
-    //     $(this).parent().addClass('current');
-    // });
+        var href = $(this).attr('href');
+        var hashPart = href.split('#')[1];
+        window.location.hash = '#' + hashPart;
+        $('#adminmenu .wp-submenu li').removeClass('current');
+        $(this).parent().addClass('current');
+    });
 
     $('#adminmenu a[href="admin.php?page=sentiment-analyzer"]').on('click', function(e) {
         var currentPage = window.location.href.split('?')[1]?.split('#')[0];
