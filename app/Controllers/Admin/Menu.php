@@ -79,56 +79,5 @@ class Menu {
         if ( ! $screen || strpos( $screen->id, 'content-mood-analyzer' ) === false ) {
             return;
         }
-
-        // Inline script to handle menu clicks
-        ?>
-        <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // Handle clicks on menu items with hash routes
-            $('#adminmenu a[href*="content-mood-analyzer#"]').on('click', function(e) {
-                e.preventDefault();
-                
-                var href = $(this).attr('href');
-                var hashPart = href.split('#')[1];
-                
-                // Update the URL hash without page reload
-                window.location.hash = '#' + hashPart;
-                
-                // Update active menu item
-                $('#adminmenu .wp-submenu li').removeClass('current');
-                $(this).parent().addClass('current');
-            });
-
-            // Handle clicks on main menu without hash (Overview)
-            $('#adminmenu a[href="admin.php?page=content-mood-analyzer"]').on('click', function(e) {
-                var currentPage = window.location.href.split('?')[1]?.split('#')[0];
-                
-                // Only prevent default if we're already on the page
-                if (currentPage === 'page=content-mood-analyzer') {
-                    e.preventDefault();
-                    
-                    // Clear the hash and go to overview
-                    window.location.hash = '';
-                    
-                    // Update active menu item
-                    $('#adminmenu .wp-submenu li').removeClass('current');
-                    $(this).parent().addClass('current');
-                }
-                // Otherwise, let it navigate normally (page reload)
-            });
-
-            // Set active menu item based on current hash on page load
-            var currentHash = window.location.hash;
-            
-            if (currentHash) {
-                // If there's a hash, highlight that menu item
-                $('#adminmenu a[href*="' + currentHash + '"]').parent().addClass('current');
-            } else {
-                // If no hash, highlight the Overview menu item
-                $('#adminmenu a[href="admin.php?page=content-mood-analyzer"]').parent().addClass('current');
-            }
-        });
-        </script>
-        <?php
     }
 }

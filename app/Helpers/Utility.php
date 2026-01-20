@@ -125,9 +125,9 @@ class Utility {
 		}
 		echo '</pre>';
 
-		if ( is_admin() && $hide_adminbar ) {
-			echo '<style>#adminmenumain{display:none;}</style>';
-		}
+		// if ( is_admin() && $hide_adminbar ) {
+		// 	echo '<style>#adminmenumain{display:none;}</style>';
+		// }
 	}
 
 	/**

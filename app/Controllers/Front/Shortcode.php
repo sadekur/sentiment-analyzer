@@ -92,7 +92,8 @@ class Shortcode {
             
             echo '</div>';
         } else {
-            echo '<p>' . sprintf(__('No %s posts found.', 'content-mood-analyzer'), $sentiment) . '</p>';
+            // FIXED: Added esc_html() around $sentiment variable
+            echo '<p>' . sprintf(esc_html__('No %s posts found.', 'content-mood-analyzer'), esc_html($sentiment)) . '</p>';
         }
         
         wp_reset_postdata();
