@@ -276,7 +276,7 @@
         $('head').append(style);
     });
 
-    $('#adminmenu a[href*="sentiment-analyzer#"]').on('click', function(e) {
+    $('#adminmenu a[href*="content-mood-analyzer#"]').on('click', function(e) {
         e.preventDefault();
         
         var href = $(this).attr('href');
@@ -286,9 +286,9 @@
         $(this).parent().addClass('current');
     });
 
-    $('#adminmenu a[href="admin.php?page=sentiment-analyzer"]').on('click', function(e) {
+    $('#adminmenu a[href="admin.php?page=content-mood-analyzer"]').on('click', function(e) {
         var currentPage = window.location.href.split('?')[1]?.split('#')[0];
-        if (currentPage === 'page=sentiment-analyzer') {
+        if (currentPage === 'page=content-mood-analyzer') {
             e.preventDefault();
             window.location.hash = '';
             $('#adminmenu .wp-submenu li').removeClass('current');
@@ -300,7 +300,7 @@
     if (currentHash) {
         $('#adminmenu a[href*="' + currentHash + '"]').parent().addClass('current');
     } else {
-        $('#adminmenu a[href="admin.php?page=sentiment-analyzer"]').parent().addClass('current');
+        $('#adminmenu a[href="admin.php?page=content-mood-analyzer"]').parent().addClass('current');
     }
     
 })(jQuery);
